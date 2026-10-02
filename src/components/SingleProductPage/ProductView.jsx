@@ -7,27 +7,27 @@ export default function ProductView({ className, reportHandler }) {
   const productsImg = [
     {
       id: 1,
-      src: "product-details-1.png",
+      src: "part-pump.jpg",
       color: "#FFBC63",
     },
     {
       id: 2,
-      src: "product-details-2.png",
+      src: "part-heater.jpg",
       color: "#649EFF",
     },
     {
       id: 3,
-      src: "product-details-3.png",
+      src: "part-gasket.jpg",
       color: "#FFFFFF",
     },
     {
       id: 4,
-      src: "product-details-4.png",
+      src: "part-valve.jpg",
       color: "#FF7173",
     },
     {
       id: 6,
-      src: "product-details-5.png",
+      src: "part-bearing.jpg",
       color: "",
     },
   ];
@@ -91,13 +91,13 @@ export default function ProductView({ className, reportHandler }) {
             data-aos="fade-up"
             className="text-qgray text-xs font-normal uppercase tracking-wider mb-2 inline-block"
           >
-            Mobile Phones
+            Пральні машини
           </span>
           <p
             data-aos="fade-up"
             className="text-xl font-medium text-qblack mb-4"
           >
-            Samsung Galaxy Z Fold3 5G 3 colors in 512GB
+            Зливний насос 30 Вт для пральної машини
           </p>
 
           <div
@@ -118,17 +118,18 @@ export default function ProductView({ className, reportHandler }) {
 
           <div data-aos="fade-up" className="flex space-x-2 items-center mb-7">
             <span className="text-sm font-500 text-qgray line-through mt-2">
-              $9.99
+              ₴1 150
             </span>
-            <span className="text-2xl font-500 text-qred">$6.99</span>
+            <span className="text-2xl font-500 text-qred">₴890</span>
           </div>
 
           <p
             data-aos="fade-up"
             className="text-qgray text-sm text-normal mb-[30px] leading-7"
           >
-            It is a long established fact that a reader will be distracted by
-            the readable there content of a page when looking at its layout.
+            Зливний насос для побутової пральної машини. Потужність 30 Вт, два
+            патрубки під шланг і штатний розʼєм живлення. Ставлять замість
+            насоса, який гуде і не зливає воду.
           </p>
 
           <div data-aos="fade-up" className="colors mb-[30px]">
