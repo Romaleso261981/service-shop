@@ -3,8 +3,8 @@ import path from "path";
 import sharp from "sharp";
 import { IMAGE_SIZES, isVariantName, variantName } from "./imageSizes.js";
 
-const dataPath = path.join(process.cwd(), "src/data/products.json");
-const imageDir = path.join(process.cwd(), "public/assets/images");
+const dataPath = process.env.CATALOG_FILE || path.join(process.cwd(), "src/data/products.json");
+const imageDir = process.env.IMAGE_DIR || path.join(process.cwd(), "public/assets/images");
 
 export function readProducts() {
   const raw = fs.readFileSync(dataPath, "utf8");
