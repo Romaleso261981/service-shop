@@ -23,8 +23,8 @@ function Drawer({ className, open, action }) {
           ></div>
         )}
         <div
-          className={`w-[280px] transition-all duration-300 ease-in-out h-screen overflow-y-auto overflow-x-hidden overflow-style-none bg-white fixed top-0 z-50 ${
-            open ? "left-0" : "-left-[280px]"
+          className={`w-[280px] transition-all duration-300 ease-in-out h-screen overflow-y-auto overflow-x-hidden overflow-style-none bg-white fixed top-0 left-0 z-50 ${
+            open ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="w-full px-5 mt-5 mb-4">

@@ -10,7 +10,7 @@ export default function Layout({ children, childrenClasses }) {
   return (
     <>
       <Drawer open={drawer} action={() => setDrawer(!drawer)} />
-      <div className="w-full overflow-x-hidden">
+      <div className="w-full min-w-full overflow-x-hidden">
         <Header drawerAction={() => setDrawer(!drawer)} />
         <div className={`w-full  ${childrenClasses || "pt-[30px] pb-[60px]"}`}>
           {children && children}

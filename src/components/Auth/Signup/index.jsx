@@ -44,21 +44,21 @@ export default function Signup() {
   }
 
   const field =
-    "h-[52px] rounded-xl bg-transparent px-4 text-[15px] placeholder:text-[#B0B0B8]";
+    "h-11 rounded-xl bg-transparent px-4 text-[15px] placeholder:text-[#B0B0B8]";
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
-      <div className="flex w-full items-center justify-center bg-[#f3f3f5] px-4 py-16">
-        <div className="w-full max-w-[440px] rounded-[28px] bg-[#16161d] p-3 shadow-[0_18px_50px_rgba(22,22,29,0.18)]">
-        <div className="w-full rounded-2xl bg-white px-6 py-8 sm:px-10 sm:py-10">
-          <h1 className="mb-8 text-center text-[32px] font-bold text-qblack">
+      <div className="flex w-full min-w-full items-center justify-center bg-[#f3f3f5] px-4 py-4">
+        <div className="w-full max-w-[440px] rounded-[28px] bg-[#16161d] p-3">
+          <div className="w-full rounded-2xl bg-white px-6 py-6 sm:px-10">
+          <h1 className="mb-5 text-center text-[32px] font-bold text-qblack">
             {t("register")}
           </h1>
           <form
             onSubmit={submit}
             className="[&_.input-label]:mb-1.5 [&_.input-label]:text-xs [&_.input-label]:font-medium [&_.input-label]:normal-case [&_.input-label]:tracking-wide [&_.input-wrapper]:rounded-xl [&_.input-wrapper]:border-[#E2E2E8] [&_.input-wrapper]:bg-[#F7F7F8] [&_.input-wrapper]:transition [&_.input-wrapper]:focus-within:border-[#FFBB38] [&_.input-wrapper]:focus-within:bg-white [&_.input-wrapper]:focus-within:shadow-[0_0_0_4px_rgba(255,187,56,0.28)]"
           >
-            <div className="mb-4">
+            <div className="mb-3">
               <InputCom
                 label={`${t("name")}*`}
                 name="name"
@@ -68,7 +68,7 @@ export default function Signup() {
                 inputHandler={(event) => update("name", event.target.value)}
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <InputCom
                 label="Email*"
                 name="email"
@@ -79,7 +79,7 @@ export default function Signup() {
                 inputHandler={(event) => update("email", event.target.value)}
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <InputCom
                 label={t("phone")}
                 name="phone"
@@ -89,7 +89,7 @@ export default function Signup() {
                 inputHandler={(event) => update("phone", event.target.value)}
               />
             </div>
-            <div className="mb-5">
+            <div className="mb-4">
               <InputCom
                 label={`${t("password")}*`}
                 name="password"
@@ -130,11 +130,11 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="black-btn flex h-[52px] w-full items-center justify-center rounded-xl text-sm font-semibold text-white"
+              className="black-btn flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white"
             >
               {loading ? "..." : t("createAccount")}
             </button>
-            <p className="mt-5 text-center text-sm text-qgraytwo">
+            <p className="mt-3 text-center text-sm text-qgraytwo">
               {t("haveAccount")}
               <Link href="/login?role=retail" className="ml-2 font-medium text-qblack">
                 {t("retailLogin")}

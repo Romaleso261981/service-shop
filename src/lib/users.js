@@ -1,21 +1,7 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
-import fs from "fs";
-import path from "path";
-
-const filePath = path.join(process.cwd(), "src/data/users.json");
-
-function readUsers() {
-  if (!fs.existsSync(filePath)) return [];
-  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  return Array.isArray(data.users) ? data.users : [];
-}
-
-function writeUsers(users) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  const temporary = `${filePath}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify({ users }, null, 2)}\n`);
-  fs.renameSync(temporary, filePath);
-}
+import { eq } from "drizzle-orm";
+import { db } from "../db";
+import { users } from "../db/schema";
 
 export function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
@@ -43,21 +29,24 @@ export function publicUser(user) {
   };
 }
 
-export function findUserByEmail(email) {
+export async function findUserByEmail(email) {
   const needle = String(email || "").trim().toLowerCase();
-  return readUsers().find((user) => user.email === needle) || null;
+  if (!needle) return null;
+  const rows = await db.select().from(users).where(eq(users.email, needle)).limit(1);
+  return rows[0] || null;
 }
 
-export function findUserById(id) {
-  return readUsers().find((user) => user.id === id) || null;
+export async function findUserById(id) {
+  if (!id) return null;
+  const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return rows[0] || null;
 }
 
-export function createUser({ name, email, phone, password, role }) {
-  const users = readUsers();
+export async function createUser({ name, email, phone, password, role }) {
   const normalized = String(email || "").trim().toLowerCase();
-  if (users.some((user) => user.email === normalized)) {
-    return { error: "exists" };
-  }
+  const existing = await findUserByEmail(normalized);
+  if (existing) return { error: "exists" };
+
   const user = {
     id: randomBytes(12).toString("hex"),
     name: String(name || "").trim(),
@@ -66,7 +55,14 @@ export function createUser({ name, email, phone, password, role }) {
     password: hashPassword(password),
     role: role === "wholesale" ? "wholesale" : "retail",
   };
-  users.push(user);
-  writeUsers(users);
+
+  try {
+    await db.insert(users).values(user);
+  } catch (error) {
+    const code = error?.code || error?.cause?.code;
+    if (code === "23505") return { error: "exists" };
+    throw error;
+  }
+
   return { user };
 }

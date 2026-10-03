@@ -10,7 +10,7 @@ export async function POST(request) {
   if (!name || !email || password.length < 6) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
-  const result = createUser({
+  const result = await createUser({
     name,
     email,
     phone: body.phone,
