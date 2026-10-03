@@ -1,9 +1,12 @@
+"use client";
 import Link from "next/link";
 import Facebook from "../../../Helpers/icons/Facebook";
 import Instagram from "../../../Helpers/icons/Instagram";
 import Youtube from "../../../Helpers/icons/Youtube";
+import { useLanguage } from "../../../../i18n/LanguageProvider";
 
 export default function Footer({ type }) {
+  const { t } = useLanguage();
   return (
     <footer className="footer-section-wrapper bg-white print:hidden">
       <div className="container-x block mx-auto pt-[56px]">
@@ -34,37 +37,36 @@ export default function Footer({ type }) {
         </div>
         <div className="lg:flex justify-between mb-[50px]">
           <div className="lg:w-[424px]  ml-0 w-full mb-10 lg:mb-0">
-            <h1 className="text-[18] font-500 text-[#2F2F2F] mb-5">About Us</h1>
+            <h1 className="text-[18] font-500 text-[#2F2F2F] mb-5">{t("aboutUs")}</h1>
             <p className="text-[#9A9A9A] text-[15px] w-[247px] leading-[28px]">
-              We know there are a lot of threa developers our but we pride into
-              a firm in the industry.
+              {t("aboutText")}
             </p>
           </div>
           <div className="flex-1 lg:flex">
             <div className="lg:w-1/3 w-full mb-10 lg:mb-0">
               <div className="mb-5">
-                <h6 className="text-[18] font-500 text-[#2F2F2F]">Feature</h6>
+                <h6 className="text-[18] font-500 text-[#2F2F2F]">{t("feature")}</h6>
               </div>
               <div>
                 <ul className="flex flex-col space-y-4 ">
                   <li>
                     <Link href="/about">
                       <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                        About Us
+                        {t("aboutUs")}
                       </span>
                     </Link>
                   </li>
                   <li>
                     <Link href="/terms-condition">
                       <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                        Terms Condition
+                        {t("terms")}
                       </span>
                     </Link>
                   </li>
                   <li>
                     <Link href="/all-products">
                       <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                        Best Products
+                        {t("bestProducts")}
                       </span>
                     </Link>
                   </li>
@@ -75,7 +77,7 @@ export default function Footer({ type }) {
               <div>
                 <div className="mb-5">
                   <h6 className="text-[18] font-500 text-[#2F2F2F]">
-                    General Links
+                    {t("generalLinks")}
                   </h6>
                 </div>
                 <div>
@@ -83,21 +85,21 @@ export default function Footer({ type }) {
                     <li>
                       <Link href="/blogs">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          Blog
+                          {t("blog")}
                         </span>
                       </Link>
                     </li>
                     <li>
                       <Link href="/tracking-order">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          Tracking Order
+                          {t("trackingOrder")}
                         </span>
                       </Link>
                     </li>
                     <li>
                       <Link href="/become-saller">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          Become Seller
+                          {t("becomeSellerShort")}
                         </span>
                       </Link>
                     </li>
@@ -108,28 +110,28 @@ export default function Footer({ type }) {
             <div className="lg:w-1/3 lg:flex lg:flex-col items-center w-full mb-10 lg:mb-0">
               <div>
                 <div className="mb-5">
-                  <h6 className="text-[18] font-500 text-[#2F2F2F]">Helpful</h6>
+                  <h6 className="text-[18] font-500 text-[#2F2F2F]">{t("helpful")}</h6>
                 </div>
                 <div>
                   <ul className="flex flex-col space-y-4 ">
                     <li>
                       <Link href="/flash-sale">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          Flash Sale
+                          {t("flashSale")}
                         </span>
                       </Link>
                     </li>
                     <li>
                       <Link href="/faq">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          FAQ
+                          {t("faq")}
                         </span>
                       </Link>
                     </li>
                     <li>
                       <Link href="/about">
                         <span className="text-[#9A9A9A] text-[15px] hover:text-qblack border-b border-transparent hover:border-qblack cursor-pointer capitalize">
-                          Support
+                          {t("support")}
                         </span>
                       </Link>
                     </li>
@@ -162,7 +164,7 @@ export default function Footer({ type }) {
               >
                 Quomodosoft
               </a>
-              All rights reserved
+              {t("rights")}
             </span>
           </div>
           <div className="">

@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "../../../i18n/LanguageProvider";
 
 export default function CategoryCard({ background, title, brands = [] }) {
+  const { t } = useLanguage();
   return (
     <div
       className="category-card-wrappwer w-full h-full p-[30px]"
@@ -12,7 +15,7 @@ export default function CategoryCard({ background, title, brands = [] }) {
       }}
     >
       <div>
-        <h1 className="text-base font-600 tracking-wide mb-2">{title}</h1>
+        <h1 className="text-base font-600 tracking-wide mb-2">{t(title)}</h1>
         <div className="brands-list mb-[7px]">
           <ul>
             {brands.map((brand) => (
@@ -28,7 +31,7 @@ export default function CategoryCard({ background, title, brands = [] }) {
         </div>
         <a href="#">
           <div className="flex space-x-2 items-center">
-            <span className="text-qblack font-600 text-sm">Shop Now</span>
+            <span className="text-qblack font-600 text-sm">{t("shopNow")}</span>
             <span>
               <svg
                 width="7"

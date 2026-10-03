@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function ViewMoreTitle({
   categoryTitle = "",
@@ -6,19 +8,20 @@ export default function ViewMoreTitle({
   children,
   seeMoreUrl = "",
 }) {
+  const { t } = useLanguage();
   return (
     <div className={`section-wrapper w-full ${className || ""}`}>
       <div className="container-x mx-auto">
         <div className=" section-title flex justify-between items-center mb-5">
           <div>
             <h1 className="sm:text-3xl text-xl font-600 text-qblacktext leading-none">
-              {categoryTitle}
+              {t(categoryTitle)}
             </h1>
           </div>
           <div>
             <Link href={seeMoreUrl}>
               <div className="flex space-x-2 items-center">
-                <p className="text-base font-600 text-qblack">View More</p>
+                <p className="text-base font-600 text-qblack">{t("viewMore")}</p>
                 <span className="animate-right-dir">
                   <svg
                     width="17"

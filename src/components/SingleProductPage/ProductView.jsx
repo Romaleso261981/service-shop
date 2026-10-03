@@ -2,8 +2,10 @@
 import { useState } from "react";
 import Star from "../Helpers/icons/Star";
 import Selectbox from "../Helpers/Selectbox";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function ProductView({ className, reportHandler }) {
+  const { t, product } = useLanguage();
   const productsImg = [
     {
       id: 1,
@@ -91,13 +93,13 @@ export default function ProductView({ className, reportHandler }) {
             data-aos="fade-up"
             className="text-qgray text-xs font-normal uppercase tracking-wider mb-2 inline-block"
           >
-            Пральні машини
+            {t("washingMachines")}
           </span>
           <p
             data-aos="fade-up"
             className="text-xl font-medium text-qblack mb-4"
           >
-            Зливний насос 30 Вт для пральної машини
+            {product("Зливний насос 30 Вт для пральної машини")}
           </p>
 
           <div
@@ -127,9 +129,7 @@ export default function ProductView({ className, reportHandler }) {
             data-aos="fade-up"
             className="text-qgray text-sm text-normal mb-[30px] leading-7"
           >
-            Зливний насос для побутової пральної машини. Потужність 30 Вт, два
-            патрубки під шланг і штатний розʼєм живлення. Ставлять замість
-            насоса, який гуде і не зливає воду.
+            {t("pumpDescription")}
           </p>
 
           <div data-aos="fade-up" className="colors mb-[30px]">

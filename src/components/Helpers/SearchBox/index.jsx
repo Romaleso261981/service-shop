@@ -1,4 +1,8 @@
+"use client";
+import { useLanguage } from "../../../i18n/LanguageProvider";
+
 export default function SearchBox({ className, type }) {
+  const { t } = useLanguage();
   return (
     <>
       <div
@@ -11,7 +15,7 @@ export default function SearchBox({ className, type }) {
             <input
               type="text"
               className="search-input"
-              placeholder="Search Product..."
+              placeholder={t("searchProduct")}
             />
           </form>
         </div>
@@ -21,7 +25,7 @@ export default function SearchBox({ className, type }) {
             type="button"
             className="w-full text-xs font-500 text-qgray flex justify-between items-center"
           >
-            <span>All Categories</span>
+            <span>{t("allCategories")}</span>
             <span>
               <svg
                 width="10"
@@ -62,7 +66,7 @@ export default function SearchBox({ className, type }) {
           }`}
           type="button"
         >
-          Search
+          {t("search")}
         </button>
       </div>
     </>

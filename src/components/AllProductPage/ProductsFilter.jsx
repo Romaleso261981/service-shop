@@ -1,5 +1,7 @@
+"use client";
 import RangeSlider from "react-range-slider-input";
 import Checkbox from "../Helpers/Checkbox";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function ProductsFilter({
   filters,
@@ -12,6 +14,7 @@ export default function ProductsFilter({
   filterToggle,
   filterToggleHandler,
 }) {
+  const { t } = useLanguage();
   return (
     <>
       <div
@@ -22,7 +25,7 @@ export default function ProductsFilter({
         <div className="filter-subject-item pb-10 border-b border-qgray-border">
           <div className="subject-title mb-[30px]">
             <h1 className="text-black text-base font-500">
-              Product categories
+              {t("productCategories")}
             </h1>
           </div>
           <div className="filter-items">
@@ -42,7 +45,7 @@ export default function ProductsFilter({
                       htmlFor="mobileLaptop"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Mobile & Laptops
+                      {t("mobileLaptops")}
                     </label>
                   </div>
                 </div>
@@ -82,7 +85,7 @@ export default function ProductsFilter({
                       htmlFor="gaming"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Gaming Entertainment
+                      {t("gamingEntertainment")}
                     </label>
                   </div>
                 </div>
@@ -122,7 +125,7 @@ export default function ProductsFilter({
                       htmlFor="imageVideo"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Image & Video
+                      {t("imageVideo")}
                     </label>
                   </div>
                 </div>
@@ -162,7 +165,7 @@ export default function ProductsFilter({
                       htmlFor="vehicles"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Vehicles
+                      {t("vehicles")}
                     </label>
                   </div>
                 </div>
@@ -202,7 +205,7 @@ export default function ProductsFilter({
                       htmlFor="furnitures"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Furnitures
+                      {t("furnitures")}
                     </label>
                   </div>
                 </div>
@@ -242,7 +245,7 @@ export default function ProductsFilter({
                       htmlFor="sport"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Sport
+                      {t("sport")}
                     </label>
                   </div>
                 </div>
@@ -282,7 +285,7 @@ export default function ProductsFilter({
                       htmlFor="foodDrinks"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Food & Drinks
+                      {t("foodDrinks")}
                     </label>
                   </div>
                 </div>
@@ -322,7 +325,7 @@ export default function ProductsFilter({
                       htmlFor="fashion"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Fashion Accessories
+                      {t("fashionAccessories")}
                     </label>
                   </div>
                 </div>
@@ -362,7 +365,7 @@ export default function ProductsFilter({
                       htmlFor="toilet"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Toilet & Sanitation
+                      {t("toiletSanitation")}
                     </label>
                   </div>
                 </div>
@@ -402,7 +405,7 @@ export default function ProductsFilter({
                       htmlFor="makeupCorner"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Makeup Corner
+                      {t("makeupCorner")}
                     </label>
                   </div>
                 </div>
@@ -442,7 +445,7 @@ export default function ProductsFilter({
                       htmlFor="babyItem"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Baby Items
+                      {t("babyItems")}
                     </label>
                   </div>
                 </div>
@@ -472,7 +475,7 @@ export default function ProductsFilter({
         </div>
         <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
           <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">Price Range</h1>
+            <h1 className="text-black text-base font-500">{t("priceRange")}</h1>
           </div>
           <div className="price-range mb-5">
             <RangeSlider
@@ -488,7 +491,7 @@ export default function ProductsFilter({
         </div>
         <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
           <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">Brands</h1>
+            <h1 className="text-black text-base font-500">{t("brands")}</h1>
           </div>
           <div className="filter-items">
             <ul>
@@ -647,7 +650,7 @@ export default function ProductsFilter({
                       htmlFor="others"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      others
+                      {t("others")}
                     </label>
                   </div>
                 </div>
@@ -657,7 +660,7 @@ export default function ProductsFilter({
         </div>
         <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
           <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">Storage</h1>
+            <h1 className="text-black text-base font-500">{t("storage")}</h1>
           </div>
           <div className="filter-items">
             <div className="flex space-x-[5px] flex-wrap">
@@ -716,7 +719,7 @@ export default function ProductsFilter({
         </div>
         <div className="filter-subject-item pb-10 mt-10">
           <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">Sizes</h1>
+            <h1 className="text-black text-base font-500">{t("sizes")}</h1>
           </div>
           <div className="filter-items">
             <ul>
@@ -815,7 +818,7 @@ export default function ProductsFilter({
                       htmlFor="sizeFit"
                       className="text-xs font-black font-400 capitalize"
                     >
-                      Sliem Fit
+                      {t("slimFit")}
                     </label>
                   </div>
                 </div>

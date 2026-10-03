@@ -28,13 +28,13 @@ export default function Home() {
         <SectionStyleOne
           products={products}
           brands={brands}
-          categoryTitle="Mobile & Tablet"
-          sectionTitle="Gamer World"
+          categoryTitle="mobileTablet"
+          sectionTitle="gamerWorld"
           seeMoreUrl="/all-products"
           className="category-products mb-[60px]"
         />
         <BrandSection
-          sectionTitle="Shop by Brand"
+          sectionTitle="shopByBrand"
           className="brand-section-wrapper mb-[60px]"
         />
         <CampaignCountDown
@@ -44,14 +44,14 @@ export default function Home() {
         <ViewMoreTitle
           className="top-selling-product mb-[60px]"
           seeMoreUrl="/all-products"
-          categoryTitle="Top Selling Products"
+          categoryTitle="topSelling"
         >
           <SectionStyleTwo products={products.slice(3, products.length)} />
         </ViewMoreTitle>
         <ViewMoreTitle
           className="best-sallers-section mb-[60px]"
           seeMoreUrl="/sallers"
-          categoryTitle="Best Saller"
+          categoryTitle="bestSeller"
         >
           <BestSellers />
         </ViewMoreTitle>
@@ -64,8 +64,8 @@ export default function Home() {
           categoryBackground={`/assets/images/section-category-2.jpg`}
           products={products.slice(4, products.length)}
           brands={brands}
-          categoryTitle="Electronics"
-          sectionTitle="Popular Sales"
+          categoryTitle="electronics"
+          sectionTitle="popularSales"
           seeMoreUrl="/all-products"
           className="category-products mb-[60px]"
         />
@@ -75,7 +75,7 @@ export default function Home() {
         />
         <SectionStyleThree
           products={products}
-          sectionTitle="New Arrivals"
+          sectionTitle="newArrivals"
           seeMoreUrl="/all-products"
           className="new-products mb-[60px]"
         />
@@ -86,7 +86,7 @@ export default function Home() {
         />
         <SectionStyleFour
           products={products}
-          sectionTitle="Popular Sales"
+          sectionTitle="popularSales"
           seeMoreUrl="/all-products"
           className="category-products mb-[60px]"
         />

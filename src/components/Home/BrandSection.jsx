@@ -1,11 +1,15 @@
+"use client";
+import { useLanguage } from "../../i18n/LanguageProvider";
+
 export default function BrandSection({ className, sectionTitle, bg }) {
+  const { t } = useLanguage();
   return (
     <div data-aos="fade-up" className={`w-full ${className || ""}`}>
       <div className="container-x mx-auto">
         <div className=" section-title flex justify-between items-center mb-5">
           <div>
             <h1 className="sm:text-3xl text-xl font-600 text-qblacktext">
-              {sectionTitle}
+              {t(sectionTitle)}
             </h1>
           </div>
         </div>

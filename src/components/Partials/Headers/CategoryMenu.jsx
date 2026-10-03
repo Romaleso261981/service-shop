@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { categories } from "../../../data/categories";
+import { useLanguage } from "../../../i18n/LanguageProvider";
 
 function Chevron() {
   return (
@@ -40,10 +41,11 @@ function itemClass(type, compact) {
 }
 
 function Leaf({ name, type, compact }) {
+  const { category } = useLanguage();
   return (
     <Link href="/all-products">
       <div className={itemClass(type, compact)}>
-        <span className="text-xs font-400 leading-4">{name}</span>
+        <span className="text-xs font-400 leading-4">{category(name)}</span>
       </div>
     </Link>
   );
@@ -51,6 +53,7 @@ function Leaf({ name, type, compact }) {
 
 export default function CategoryMenu({ type, variant = "desktop" }) {
   const compact = variant === "mobile";
+  const { category: label } = useLanguage();
   const [openCategory, setOpenCategory] = useState(null);
   const [openChild, setOpenChild] = useState(null);
 
@@ -73,7 +76,7 @@ export default function CategoryMenu({ type, variant = "desktop" }) {
                 }
               >
                 <span className="text-xs font-400 leading-4">
-                  {category.name}
+                  {label(category.name)}
                 </span>
                 <Chevron />
               </div>
@@ -108,7 +111,7 @@ export default function CategoryMenu({ type, variant = "desktop" }) {
                             }
                           >
                             <span className="text-xs font-400 leading-4">
-                              {child.name}
+                              {label(child.name)}
                             </span>
                             <Chevron />
                           </div>

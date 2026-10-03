@@ -1,10 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 
-export default function Selectbox({ datas = [], className, action, children }) {
-  const [item, setItem] = useState(datas[0]);
+export default function Selectbox({
+  datas = [],
+  className,
+  action,
+  children,
+  value,
+}) {
+  const [item, setItem] = useState(value || datas[0]);
   const [toggle, setToggle] = useState(false);
+  useEffect(() => {
+    if (value) setItem(value);
+  }, [value]);
   const handler = (e, value) => {
     if (action) {
       action(value);
@@ -34,7 +43,7 @@ export default function Selectbox({ datas = [], className, action, children }) {
               {datas.map((value) => (
                 <li
                   className={item === value ? "selected" : ""}
-                  key={Math.random() + value}
+                  key={value}
                   onClick={(e) => handler(e, value)}
                 >
                   {value}

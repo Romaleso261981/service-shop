@@ -6,8 +6,10 @@ import ProductCardStyleOne from "../Helpers/Cards/ProductCardStyleOne";
 import DataIteration from "../Helpers/DataIteration";
 import Layout from "../Partials/Layout";
 import ProductsFilter from "./ProductsFilter";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function AllProductPage() {
+  const { t } = useLanguage();
   const [filters, setFilter] = useState({
     mobileLaptop: false,
     gaming: false,
@@ -86,15 +88,15 @@ export default function AllProductPage() {
                 <div className="products-sorting w-full bg-white md:h-[70px] flex md:flex-row flex-col md:space-y-0 space-y-5 md:justify-between md:items-center p-[30px] mb-[40px]">
                   <div>
                     <p className="font-400 text-[13px]">
-                      <span className="text-qgray"> Showing</span> 1–16 of 66
-                      results
+                      <span className="text-qgray"> {t("showing")}</span> 1–16{" "}
+                      {t("of")} 66 {t("results")}
                     </p>
                   </div>
                   <div className="flex space-x-3 items-center">
-                    <span className="font-400 text-[13px]">Sort by:</span>
+                    <span className="font-400 text-[13px]">{t("sortBy")}</span>
                     <div className="flex space-x-3 items-center border-b border-b-qgray">
                       <span className="font-400 text-[13px] text-qgray">
-                        Default
+                        {t("defaultSort")}
                       </span>
                       <span>
                         <svg

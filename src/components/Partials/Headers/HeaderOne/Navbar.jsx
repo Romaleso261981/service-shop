@@ -3,9 +3,11 @@ import { useState } from "react";
 import Arrow from "../../../Helpers/icons/Arrow";
 import Link from "next/link";
 import CategoryMenu from "../CategoryMenu";
+import { useLanguage } from "../../../../i18n/LanguageProvider";
 
 export default function Navbar({ className, type }) {
   const [categoryToggle, setToggle] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <div
@@ -43,7 +45,7 @@ export default function Navbar({ className, type }) {
                       </svg>
                     </span>
                     <span className="text-sm font-600 text-qblacktext">
-                      Каталог запчастей
+                      {t("catalog")}
                     </span>
                   </div>
                   <div>
@@ -72,7 +74,7 @@ export default function Navbar({ className, type }) {
                           type === 3 ? "text-white" : "text-qblacktext"
                         }`}
                       >
-                        Home
+                        {t("home")}
                       </span>
                     </Link>
                   </li>
@@ -82,7 +84,7 @@ export default function Navbar({ className, type }) {
                         type === 3 ? "text-white" : "text-qblacktext"
                       }`}
                     >
-                      <span>Shop</span>
+                      <span>{t("shop")}</span>
                       <span className="ml-1.5 ">
                         <Arrow className="fill-current" />
                       </span>
@@ -99,7 +101,7 @@ export default function Navbar({ className, type }) {
                           <div>
                             <div className="category">
                               <h1 className="text-[13px] font-700 text-qblack uppercase mb-[13px]">
-                                Shop List
+                                {t("shopList")}
                               </h1>
                             </div>
                             <div className="category-items">
@@ -113,7 +115,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop Sidebar
+                                      {t("shopSidebar")}
                                     </span>
                                   </Link>
                                 </li>
@@ -126,7 +128,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop Fullwidth
+                                      {t("shopFullwidth")}
                                     </span>
                                   </Link>
                                 </li>
@@ -139,7 +141,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop Category Icon
+                                      {t("shopCategoryIcon")}
                                     </span>
                                   </Link>
                                 </li>
@@ -152,7 +154,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop Category Icon
+                                      {t("shopCategoryIcon")}
                                     </span>
                                   </Link>
                                 </li>
@@ -165,7 +167,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop List View
+                                      {t("shopListView")}
                                     </span>
                                   </Link>
                                 </li>
@@ -175,7 +177,7 @@ export default function Navbar({ className, type }) {
                           <div>
                             <div className="category">
                               <h1 className="text-[13px] font-700 text-qblack uppercase mb-[13px]">
-                                Product Layouts
+                                {t("productLayouts")}
                               </h1>
                             </div>
                             <div className="category-items">
@@ -189,7 +191,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Horizonral Thumbnail
+                                      {t("horizontalThumb")}
                                     </span>
                                   </Link>
                                 </li>
@@ -202,7 +204,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Vertical Thumbnail
+                                      {t("verticalThumb")}
                                     </span>
                                   </Link>
                                 </li>
@@ -215,7 +217,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Gallery Thumbnail
+                                      {t("galleryThumb")}
                                     </span>
                                   </Link>
                                 </li>
@@ -228,7 +230,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Sticky Summary
+                                      {t("stickySummary")}
                                     </span>
                                   </Link>
                                 </li>
@@ -238,7 +240,7 @@ export default function Navbar({ className, type }) {
                           <div>
                             <div className="category">
                               <h1 className="text-[13px] font-700 text-qblack uppercase mb-[13px]">
-                                Polular Category
+                                {t("popularCategory")}
                               </h1>
                             </div>
                             <div className="category-items">
@@ -252,7 +254,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Phone & Tablet
+                                      {t("mobileTablet")}
                                     </span>
                                   </Link>
                                 </li>
@@ -265,7 +267,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Gaming & Sports
+                                      {t("gamingSports")}
                                     </span>
                                   </Link>
                                 </li>
@@ -278,7 +280,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Home Appliance
+                                      {t("homeAppliance")}
                                     </span>
                                   </Link>
                                 </li>
@@ -291,7 +293,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Fashion Clothes
+                                      {t("fashionClothes")}
                                     </span>
                                   </Link>
                                 </li>
@@ -318,7 +320,7 @@ export default function Navbar({ className, type }) {
                         type === 3 ? "text-white" : "text-qblacktext"
                       }`}
                     >
-                      <span>Pages</span>
+                      <span>{t("pages")}</span>
                       <span className="ml-1.5 ">
                         <Arrow className="fill-current" />
                       </span>
@@ -343,7 +345,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Privacy Policy
+                                      {t("privacyPolicy")}
                                     </span>
                                   </Link>
                                 </li>
@@ -356,7 +358,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Terms and Conditions
+                                      {t("termsAndConditions")}
                                     </span>
                                   </Link>
                                 </li>
@@ -369,7 +371,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      FAQ
+                                      {t("faq")}
                                     </span>
                                   </Link>
                                 </li>
@@ -382,7 +384,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop Category Icon
+                                      {t("shopCategoryIcon")}
                                     </span>
                                   </Link>
                                 </li>
@@ -395,7 +397,7 @@ export default function Navbar({ className, type }) {
                                           : "hover:text-qyellow hover:border-qyellow"
                                       }`}
                                     >
-                                      Shop List View
+                                      {t("shopListView")}
                                     </span>
                                   </Link>
                                 </li>
@@ -413,7 +415,7 @@ export default function Navbar({ className, type }) {
                           type === 3 ? "text-white" : "text-qblacktext"
                         }`}
                       >
-                        <span>About</span>
+                        <span>{t("about")}</span>
                       </span>
                     </Link>
                   </li>
@@ -424,7 +426,7 @@ export default function Navbar({ className, type }) {
                           type === 3 ? "text-white" : "text-qblacktext"
                         }`}
                       >
-                        <span>Blog</span>
+                        <span>{t("blog")}</span>
                       </span>
                     </Link>
                   </li>
@@ -435,7 +437,7 @@ export default function Navbar({ className, type }) {
                           type === 3 ? "text-white" : "text-qblacktext"
                         }`}
                       >
-                        <span>Contact</span>
+                        <span>{t("contact")}</span>
                       </span>
                     </Link>
                   </li>
@@ -444,9 +446,11 @@ export default function Navbar({ className, type }) {
             </div>
             <div className="become-seller-btn">
               <Link href="/become-saller">
-                <div className="black-btn w-[161px] h-[40px] flex justify-center items-center cursor-pointer">
+                <div className="black-btn h-[40px] px-4 flex justify-center items-center cursor-pointer">
                   <div className="flex space-x-2 items-center">
-                    <span className="text-sm font-600">Become a Seller</span>
+                    <span className="text-sm font-600 whitespace-nowrap">
+                      {t("becomeSeller")}
+                    </span>
                     <span>
                       <svg
                         className="fill-current"

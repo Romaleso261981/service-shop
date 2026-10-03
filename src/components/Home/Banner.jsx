@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function Banner({ className }) {
+  const { t } = useLanguage();
   return (
     <>
       <div className={`w-full ${className || ""}`}>
@@ -101,10 +104,10 @@ export default function Banner({ className }) {
                   </div>
                   <div>
                     <p className="text-black text-[15px] font-700 tracking-wide mb-1">
-                      Free Shipping
+                      {t("freeShipping")}
                     </p>
                     <p className="text-sm text-qgray">
-                      When ordering over $100
+                      {t("freeShippingNote")}
                     </p>
                   </div>
                 </div>
@@ -138,10 +141,10 @@ export default function Banner({ className }) {
                   </div>
                   <div>
                     <p className="text-black text-[15px] font-700 tracking-wide mb-1">
-                      Free Return
+                      {t("freeReturn")}
                     </p>
                     <p className="text-sm text-qgray">
-                      Get Return within 30 days
+                      {t("freeReturnNote")}
                     </p>
                   </div>
                 </div>
@@ -183,10 +186,10 @@ export default function Banner({ className }) {
                   </div>
                   <div>
                     <p className="text-black text-[15px] font-700 tracking-wide mb-1">
-                      Secure Payment
+                      {t("securePayment")}
                     </p>
                     <p className="text-sm text-qgray">
-                      100% Secure Online Payment
+                      {t("securePaymentNote")}
                     </p>
                   </div>
                 </div>
@@ -239,10 +242,10 @@ export default function Banner({ className }) {
                   </div>
                   <div>
                     <p className="text-black text-[15px] font-700 tracking-wide mb-1">
-                      Best Quality
+                      {t("bestQuality")}
                     </p>
                     <p className="text-sm text-qgray">
-                      Original Product Guarenteed
+                      {t("bestQualityNote")}
                     </p>
                   </div>
                 </div>

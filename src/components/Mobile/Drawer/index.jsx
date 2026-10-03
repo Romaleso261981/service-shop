@@ -4,9 +4,11 @@ import Compair from "../../Helpers/icons/Compair";
 import ThinLove from "../../Helpers/icons/ThinLove";
 import Link from "next/link";
 import CategoryMenu from "../../Partials/Headers/CategoryMenu";
+import { useLanguage } from "../../../i18n/LanguageProvider";
 
 function Drawer({ className, open, action }) {
   const [tab, setTab] = useState("category");
+  const { t } = useLanguage();
   return (
     <>
       <div
@@ -130,7 +132,7 @@ function Drawer({ className, open, action }) {
                   <Link href="/">
                     <div className=" flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">Home</span>
+                        <span className="text-sm font-400">{t("home")}</span>
                       </div>
                     </div>
                   </Link>
@@ -140,7 +142,7 @@ function Drawer({ className, open, action }) {
                   <Link href="/shops/shop">
                     <div className="flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">Shop</span>
+                        <span className="text-sm font-400">{t("shop")}</span>
                       </div>
                       <div>
                         <span>
@@ -177,7 +179,7 @@ function Drawer({ className, open, action }) {
                   <a href="#">
                     <div className=" flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">Pages</span>
+                        <span className="text-sm font-400">{t("pages")}</span>
                       </div>
                       <div>
                         <span>
@@ -215,7 +217,7 @@ function Drawer({ className, open, action }) {
                         <div className=" flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                           <div className="flex items-center space-x-6">
                             <span className="text-sm font-400">
-                              Privacy Policy
+                              {t("privacyPolicy")}
                             </span>
                           </div>
                           <div>
@@ -253,7 +255,7 @@ function Drawer({ className, open, action }) {
                       <Link href="/faq">
                         <div className=" flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                           <div className="flex items-center space-x-6">
-                            <span className="text-sm font-400">FAQ</span>
+                            <span className="text-sm font-400">{t("faq")}</span>
                           </div>
                           <div>
                             <span>
@@ -291,7 +293,7 @@ function Drawer({ className, open, action }) {
                         <div className=" flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                           <div className="flex items-center space-x-6">
                             <span className="text-sm font-400">
-                              Terms and Conditions
+                              {t("termsAndConditions")}
                             </span>
                           </div>
                           <div>
@@ -332,7 +334,7 @@ function Drawer({ className, open, action }) {
                   <Link href="/about">
                     <div className="flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">About</span>
+                        <span className="text-sm font-400">{t("about")}</span>
                       </div>
                       <div>
                         <span>
@@ -369,7 +371,7 @@ function Drawer({ className, open, action }) {
                   <Link href="/Blogs">
                     <div className="flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">Blogs</span>
+                        <span className="text-sm font-400">{t("blog")}</span>
                       </div>
                       <div>
                         <span>
@@ -406,7 +408,7 @@ function Drawer({ className, open, action }) {
                   <Link href="/contact">
                     <div className="flex justify-between items-center px-5 h-12 bg-white hover:bg-qyellow transition-all duration-300 ease-in-out cursor-pointer">
                       <div className="flex items-center space-x-6">
-                        <span className="text-sm font-400">Contact</span>
+                        <span className="text-sm font-400">{t("contact")}</span>
                       </div>
                       <div>
                         <span>

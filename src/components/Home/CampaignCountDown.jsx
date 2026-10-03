@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import CountDown from "../Helpers/CountDown";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 export default function CampaignCountDown({
   className,
@@ -9,6 +10,7 @@ export default function CampaignCountDown({
   appscreen,
 }) {
   const { showDate, showHour, showMinute, showSecound } = CountDown(lastDate);
+  const { t } = useLanguage();
 
   return (
     <div>
@@ -33,7 +35,7 @@ export default function CampaignCountDown({
                         </span>
                       </div>
                       <p className="sm:text-[18px] text-[12px] font-500 text-center leading-8">
-                        Days
+                        {t("days")}
                       </p>
                     </div>
                     <div className="countdown-item">
@@ -43,7 +45,7 @@ export default function CampaignCountDown({
                         </span>
                       </div>
                       <p className="sm:text-[18px] text-[12px] font-500 text-center leading-8">
-                        Hours
+                        {t("hours")}
                       </p>
                     </div>
                     <div className="countdown-item">
@@ -53,7 +55,7 @@ export default function CampaignCountDown({
                         </span>
                       </div>
                       <p className="sm:text-[18px] text-[12px] font-500 text-center leading-8">
-                        Minutes
+                        {t("minutes")}
                       </p>
                     </div>
                     <div className="countdown-item">
@@ -63,18 +65,18 @@ export default function CampaignCountDown({
                         </span>
                       </div>
                       <p className="sm:text-[18px] text-[12px] font-500 text-center leading-8">
-                        Seconds
+                        {t("seconds")}
                       </p>
                     </div>
                   </div>
                   <div className="countdown-title mb-4">
                     <h1 className="text-[44px] text-qblack font-600">
-                      WOO! Flash Sale
+                      {t("flashSale")}
                     </h1>
                   </div>
                   <div className="inline-flex space-x-2 items-center border-b border-qyellow">
                     <span className="text-sm font-600 tracking-wide leading-7">
-                      Shop Now
+                      {t("shopNow")}
                     </span>
                     <span>
                       <svg
@@ -119,14 +121,14 @@ export default function CampaignCountDown({
               <div className="flex flex-col h-full justify-between">
                 <div className="get-app">
                   <p className="text-[13px] font-600 text-qblack mb-3">
-                    MOBILE APP VERSION
+                    {t("mobileApp")}
                   </p>
                   <h1 className="text-[30px] font-600 text-qblack leading-10 mb-8">
-                    Get Our
+                    {t("getOur")}
                     <span className="text-qred border-b-2 border-qred mx-2">
-                      Mobile App
+                      {t("mobileAppWord")}
                     </span>
-                    <br /> It’s Make easy for you life !
+                    <br /> {t("appNote")}
                   </h1>
                   <div className="flex space-x-5 items-center">
                     <div>

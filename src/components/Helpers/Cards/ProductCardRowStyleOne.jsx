@@ -1,10 +1,13 @@
+"use client";
 import Link from "next/link";
 import Compair from "../icons/Compair";
 import QuickViewIco from "../icons/QuickViewIco";
 import Star from "../icons/Star";
 import ThinLove from "../icons/ThinLove";
+import { useLanguage } from "../../../i18n/LanguageProvider";
 
 export default function ProductCardRowStyleTwo({ className, datas, type }) {
+  const { t, product } = useLanguage();
   return (
     <div
       data-aos="fade-left"
@@ -32,7 +35,7 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
             </div>
             <Link href="/single-product">
               <p className="title mb-2 sm:text-[15px] text-[13px] font-600 text-qblack leading-[24px] line-clamp-2 hover:text-blue-600">
-                {datas.title}
+                {product(datas.title)}
               </p>
             </Link>
             <p className="price mb-[26px]">
@@ -43,7 +46,7 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
                 {datas.offer_price}
               </span>
             </p>
-            <button type="button" className="w-[110px] h-[30px]">
+            <button type="button" className="min-w-[110px] h-[30px] px-3">
               <span
                 className={
                   type === 3
@@ -53,8 +56,7 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
                     : "yellow-btn"
                 }
               >
-                {" "}
-                Add To Cart
+                {t("addToCart")}
               </span>
             </button>
           </div>

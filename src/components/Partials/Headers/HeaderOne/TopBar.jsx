@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
 import Arrow from "../../../Helpers/icons/Arrow";
 import Selectbox from "../../../Helpers/Selectbox";
+import { LANGUAGE_OPTIONS, useLanguage } from "../../../../i18n/LanguageProvider";
 
 export default function TopBar({ className }) {
+  const { lang, setLang, t } = useLanguage();
+  const current = LANGUAGE_OPTIONS.find((option) => option.code === lang);
   return (
     <>
       <div
@@ -17,21 +21,21 @@ export default function TopBar({ className }) {
                 <li>
                   <Link href="/">
                     <span className="text-xs leading-6 text-qblack font-500">
-                      Account
+                      {t("account")}
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/tracking-order">
                     <span className="text-xs leading-6 text-qblack font-500">
-                      Track Order
+                      {t("trackOrder")}
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/faq">
                     <span className="text-xs leading-6 text-qblack font-500">
-                      Support
+                      {t("support")}
                     </span>
                   </Link>
                 </li>
@@ -42,7 +46,14 @@ export default function TopBar({ className }) {
                 <div className="language-select flex space-x-1 items-center">
                   <Selectbox
                     className="w-fit"
-                    datas={["🇬🇧 en", "🇷🇺 rus", "🇺🇦 uk"]}
+                    datas={LANGUAGE_OPTIONS.map((option) => option.label)}
+                    value={current?.label}
+                    action={(label) => {
+                      const next = LANGUAGE_OPTIONS.find(
+                        (option) => option.label === label
+                      );
+                      if (next) setLang(next.code);
+                    }}
                   />
                   <div>
                     <Arrow className="fill-current qblack" />

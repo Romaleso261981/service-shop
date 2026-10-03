@@ -5,6 +5,7 @@ import "../../public/assets/styles/multirangeslider.css";
 import "../../public/assets/styles/selectbox.css";
 import InitialStyle from "@/components/initialStyle";
 import ServiceWorker from "@/components/sw/sw";
+import { LanguageProvider } from "@/i18n/LanguageProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default function RootLayout({ children }) {
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }
