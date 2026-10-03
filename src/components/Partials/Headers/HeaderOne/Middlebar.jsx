@@ -5,6 +5,7 @@ import ThinBag from "../../../Helpers/icons/ThinBag";
 import ThinLove from "../../../Helpers/icons/ThinLove";
 import SearchBox from "../../../Helpers/SearchBox";
 import AccountMenu from "./AccountMenu";
+import PhoneMenu from "./PhoneMenu";
 
 export default function Middlebar({ className, type }) {
   return (
@@ -42,10 +43,11 @@ export default function Middlebar({ className, type }) {
                 </Link>
               )}
             </div>
-            <div className="w-[517px] h-[44px]">
+            <div className="h-[44px] min-w-0 flex-1 px-6">
               <SearchBox type={type} className="search-com" />
             </div>
             <div className="flex space-x-6 items-center">
+              <PhoneMenu />
               <div className="compaire relative">
                 <Link href="/products-compaire">
                   <span>

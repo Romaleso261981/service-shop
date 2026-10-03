@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { categories } from "../../data/categories";
 import { useLanguage } from "../../i18n/LanguageProvider";
+import CategoryIcon from "../Partials/Headers/CategoryIcon";
 
 function Plus({ open }) {
   return (
@@ -39,7 +40,8 @@ export default function CatalogFilter() {
         return (
           <li key={item.name} className="mb-4">
             <div className="flex justify-between items-center gap-3">
-              <span className="text-xs font-400 text-qblack leading-5">
+              <span className="flex min-w-0 items-center gap-2.5 text-xs font-400 text-qblack leading-5">
+                <CategoryIcon name={item.name} />
                 {category(item.name)}
               </span>
               {item.children && (

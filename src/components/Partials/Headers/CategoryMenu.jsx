@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { categories } from "../../../data/categories";
 import { useLanguage } from "../../../i18n/LanguageProvider";
+import CategoryIcon from "./CategoryIcon";
 
 function Chevron() {
   return (
@@ -40,12 +41,15 @@ function itemClass(type, compact) {
   }`;
 }
 
-function Leaf({ name, type, compact }) {
+function Leaf({ name, type, compact, icon = false }) {
   const { category } = useLanguage();
   return (
     <Link href="/all-products">
       <div className={itemClass(type, compact)}>
-        <span className="text-xs font-400 leading-4">{category(name)}</span>
+        <span className="flex min-w-0 items-center gap-2.5">
+          {icon && <CategoryIcon name={name} />}
+          <span className="text-xs font-400 leading-4">{category(name)}</span>
+        </span>
       </div>
     </Link>
   );
@@ -75,13 +79,16 @@ export default function CategoryMenu({ type, variant = "desktop" }) {
                     : undefined
                 }
               >
-                <span className="text-xs font-400 leading-4">
-                  {label(category.name)}
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <CategoryIcon name={category.name} />
+                  <span className="text-xs font-400 leading-4">
+                    {label(category.name)}
+                  </span>
                 </span>
                 <Chevron />
               </div>
             ) : (
-              <Leaf name={category.name} type={type} compact={compact} />
+              <Leaf name={category.name} type={type} compact={compact} icon />
             )}
             {category.children && (
               <div

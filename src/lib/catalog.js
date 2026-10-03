@@ -33,7 +33,10 @@ async function writeVariants(filename, input) {
     IMAGE_SIZES.map(({ width, height }) =>
       sharp(input)
         .rotate()
-        .resize(width, height, { fit: "cover", position: "centre" })
+        .resize(width, height, {
+          fit: "contain",
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
         .webp({ quality: 82 })
         .toFile(path.join(imageDir, variantName(filename, width, height)))
     )

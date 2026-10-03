@@ -18,12 +18,12 @@ export default function ProductCardStyleOne({ datas, type }) {
       className="product-card-one w-full h-full bg-white relative group overflow-hidden"
       style={{ boxShadow: "0px 15px 64px 0px rgba(0, 0, 0, 0.05)" }}
     >
-      <div
-        className="product-card-img w-full h-[300px]"
-        style={{
-          background: `url(/assets/images/${datas.image}) no-repeat center`,
-        }}
-      >
+      <div className="product-card-img relative flex h-[300px] w-full items-center justify-center bg-white p-6">
+        <img
+          src={`/assets/images/${datas.image}`}
+          alt=""
+          className="max-h-full max-w-full object-contain"
+        />
         {/* product available progress */}
         {datas.campaingn_product && (
           <>

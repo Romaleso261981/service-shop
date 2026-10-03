@@ -37,7 +37,7 @@ export default function Banner({ className, products = [] }) {
                           : "/assets/images/banner-1.2.png"
                       }
                       alt={main ? itemTitle(main) : ""}
-                      className="w-full max-w-full h-auto object-cover"
+                      className="w-full max-w-full h-auto object-contain bg-white"
                     />
                   </picture>
                 </Link>
@@ -55,7 +55,7 @@ export default function Banner({ className, products = [] }) {
                           : "/assets/images/banner-2.png"
                       }
                       alt={top ? itemTitle(top) : ""}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-white"
                     />
                   </Link>
                 </div>
@@ -68,7 +68,7 @@ export default function Banner({ className, products = [] }) {
                           : "/assets/images/banner-3.png"
                       }
                       alt={bottom ? itemTitle(bottom) : ""}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-white"
                     />
                   </Link>
                 </div>
