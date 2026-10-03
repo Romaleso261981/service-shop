@@ -1,4 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
+import { findUserById } from "./users";
+import { userIdFromRequest } from "./userSession";
 
 function password() {
   return process.env.ADMIN_PASSWORD || "service-shop";
@@ -20,8 +22,12 @@ export function passwordMatches(input) {
   return same(input, password());
 }
 
-export function isAdminRequest(request) {
-  return same(request.cookies.get("admin_session")?.value || "", sessionToken());
+export async function isAdminRequest(request) {
+  if (same(request.cookies.get("admin_session")?.value || "", sessionToken())) {
+    return true;
+  }
+  const user = await findUserById(userIdFromRequest(request));
+  return user?.status === "admin";
 }
 
 export function adminCookie() {

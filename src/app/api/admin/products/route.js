@@ -16,7 +16,7 @@ function translated(product) {
 }
 
 export async function GET(request) {
-  if (!isAdminRequest(request)) {
+  if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   return NextResponse.json({
@@ -26,7 +26,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  if (!isAdminRequest(request)) {
+  if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   const body = await request.json().catch(() => ({}));

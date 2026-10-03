@@ -4,7 +4,7 @@ import { readProducts, writeProducts } from "@/lib/catalog";
 import { normalizeProduct } from "@/lib/productRecord";
 
 export async function PUT(request, { params }) {
-  if (!isAdminRequest(request)) {
+  if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   const body = await request.json().catch(() => ({}));
@@ -23,7 +23,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  if (!isAdminRequest(request)) {
+  if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   const products = readProducts();

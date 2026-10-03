@@ -57,6 +57,7 @@ export default function AdminPanel() {
   const [ready, setReady] = useState(false);
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
+  const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
@@ -65,15 +66,20 @@ export default function AdminPanel() {
   const [saving, setSaving] = useState(false);
 
   async function load() {
-    const response = await fetch("/api/admin/products");
-    if (response.status === 401) {
+    const [productsResponse, usersResponse] = await Promise.all([
+      fetch("/api/admin/products"),
+      fetch("/api/admin/users"),
+    ]);
+    if (productsResponse.status === 401) {
       setAuthed(false);
       setReady(true);
       return;
     }
-    const data = await response.json();
+    const data = await productsResponse.json();
+    const usersData = await usersResponse.json().catch(() => ({}));
     setProducts(data.products || []);
     setImages(data.images || []);
+    setCustomers(usersData.users || []);
     setAuthed(true);
     setReady(true);
   }
@@ -112,6 +118,23 @@ export default function AdminPanel() {
     }
     setPassword("");
     await load();
+  }
+
+  async function changeStatus(user, status) {
+    setError("");
+    const response = await fetch(`/api/admin/users/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setError(data.error || "Не вдалося змінити статус");
+      return;
+    }
+    setCustomers((current) =>
+      current.map((item) => (item.id === user.id ? { ...item, status: data.user.status } : item))
+    );
   }
 
   async function logout() {
@@ -224,6 +247,49 @@ export default function AdminPanel() {
       </header>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {error && <p className="mb-4 text-sm text-qred">{error}</p>}
+        <section className="bg-white border border-qgray-border mb-8">
+          <div className="px-4 py-4 border-b border-qgray-border flex items-center justify-between">
+            <h2 className="text-lg font-600">Користувачі</h2>
+            <p className="text-sm text-qgray">Зареєстровано: {customers.length}</p>
+          </div>
+          {customers.length === 0 ? (
+            <p className="px-4 py-6 text-sm text-qgray">Поки ніхто не зареєструвався.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="text-left text-qgray">
+                  <tr>
+                    <th className="px-4 py-3 font-500">Імʼя</th>
+                    <th className="px-4 py-3 font-500">Пошта</th>
+                    <th className="px-4 py-3 font-500">Телефон</th>
+                    <th className="px-4 py-3 font-500">Тип</th>
+                    <th className="px-4 py-3 font-500">Статус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customers.map((user) => (
+                    <tr key={user.id} className="border-t border-qgray-border">
+                      <td className="px-4 py-3">{user.name}</td>
+                      <td className="px-4 py-3">{user.email}</td>
+                      <td className="px-4 py-3">{user.phone || "—"}</td>
+                      <td className="px-4 py-3">{user.role === "wholesale" ? "Опт" : "Роздріб"}</td>
+                      <td className="px-4 py-3">
+                        <select
+                          value={user.status === "admin" ? "admin" : "customer"}
+                          onChange={(event) => changeStatus(user, event.target.value)}
+                          className="h-9 border border-qgray-border px-2 bg-white"
+                        >
+                          <option value="customer">Клієнт</option>
+                          <option value="admin">Адмін</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between mb-5">
           <input
             value={query}

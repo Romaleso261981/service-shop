@@ -1,5 +1,5 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "../db";
 import { users } from "../db/schema";
 
@@ -26,7 +26,26 @@ export function publicUser(user) {
     email: user.email,
     phone: user.phone || "",
     role: user.role,
+    status: user.status === "admin" ? "admin" : "customer",
   };
+}
+
+export async function listUsers() {
+  const rows = await db.select().from(users).orderBy(desc(users.createdAt));
+  return rows.map((user) => ({
+    ...publicUser(user),
+    createdAt: user.createdAt,
+  }));
+}
+
+export async function setUserStatus(id, status) {
+  const next = status === "admin" ? "admin" : "customer";
+  const rows = await db
+    .update(users)
+    .set({ status: next })
+    .where(eq(users.id, id))
+    .returning();
+  return rows[0] ? publicUser(rows[0]) : null;
 }
 
 export async function findUserByEmail(email) {

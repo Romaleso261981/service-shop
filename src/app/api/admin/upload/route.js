@@ -3,7 +3,7 @@ import { isAdminRequest } from "@/lib/adminAuth";
 import { saveImage } from "@/lib/catalog";
 
 export async function POST(request) {
-  if (!isAdminRequest(request)) {
+  if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   const form = await request.formData();

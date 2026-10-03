@@ -61,7 +61,15 @@ export default function AccountMenu() {
   }
 
   return (
-    <div className="account-wrapper group relative py-4">
+    <div className="account-wrapper group relative flex items-center gap-3 py-4">
+      {user?.status === "admin" && (
+        <Link
+          href="/admin"
+          className="inline-flex h-9 items-center bg-qblack px-3 text-xs font-600 text-white"
+        >
+          {t("admin")}
+        </Link>
+      )}
       <span className="cursor-pointer">
         <ThinPeople />
       </span>
@@ -71,7 +79,13 @@ export default function AccountMenu() {
             <p className="text-sm font-600 text-qblack">{user.name}</p>
             <p className="text-xs text-qgray mt-1 mb-3">
               {user.role === "wholesale" ? t("wholesale") : t("retail")}
+              {user.status === "admin" ? ` · ${t("admin")}` : ""}
             </p>
+            {user.status === "admin" && (
+              <Link href="/admin" className="mb-3 block text-sm font-600 text-qblack">
+                {t("admin")}
+              </Link>
+            )}
             <button type="button" onClick={logout} className="text-sm text-qred">
               {t("logout")}
             </button>
