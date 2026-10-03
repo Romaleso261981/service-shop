@@ -5,6 +5,7 @@ import QuickViewIco from "../icons/QuickViewIco";
 import Star from "../icons/Star";
 import ThinLove from "../icons/ThinLove";
 import { useLanguage } from "../../../i18n/LanguageProvider";
+import ProductFacts from "../ProductFacts";
 
 export default function ProductCardStyleOne({ datas, type }) {
   const { t, itemTitle } = useLanguage();
@@ -92,11 +93,12 @@ export default function ProductCardStyleOne({ datas, type }) {
             </span>
           ))}
         </div>
-        <Link href="/single-product">
+        <Link href={`/product/${datas.id}`}>
           <p className="title mb-2 text-[15px] font-600 text-qblack leading-[24px] line-clamp-2 hover:text-blue-600">
             {itemTitle(datas)}
           </p>
         </Link>
+        <ProductFacts datas={datas} />
         <p className="price">
           <span className="main-price text-qgray line-through font-600 text-[18px]">
             {datas.price}

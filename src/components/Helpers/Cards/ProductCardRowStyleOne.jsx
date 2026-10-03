@@ -5,6 +5,7 @@ import QuickViewIco from "../icons/QuickViewIco";
 import Star from "../icons/Star";
 import ThinLove from "../icons/ThinLove";
 import { useLanguage } from "../../../i18n/LanguageProvider";
+import ProductFacts from "../ProductFacts";
 
 export default function ProductCardRowStyleTwo({ className, datas, type }) {
   const { t, itemTitle } = useLanguage();
@@ -33,11 +34,12 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
                 </span>
               ))}
             </div>
-            <Link href="/single-product">
+            <Link href={`/product/${datas.id}`}>
               <p className="title mb-2 sm:text-[15px] text-[13px] font-600 text-qblack leading-[24px] line-clamp-2 hover:text-blue-600">
                 {itemTitle(datas)}
               </p>
             </Link>
+            <ProductFacts datas={datas} />
             <p className="price mb-[26px]">
               <span className="main-price text-qgray line-through font-600 sm:text-[18px] text-base">
                 {datas.price}

@@ -9,6 +9,14 @@ const emptyForm = {
   title_en: "",
   title_ru: "",
   brand: "",
+  manufacturer: "",
+  sku: "",
+  code: "",
+  stock: "in",
+  warranty: "",
+  description: "",
+  compatible: "",
+  specs: [{ name: "", value: "" }],
   price: "",
   offer_price: "",
   image: "",
@@ -26,6 +34,14 @@ function formFromProduct(product) {
     title_en: product.title_en || "",
     title_ru: product.title_ru || "",
     brand: product.brand || "",
+    manufacturer: product.manufacturer || "",
+    sku: product.sku || "",
+    code: product.code || "",
+    stock: product.stock || "in",
+    warranty: product.warranty || "",
+    description: product.description || "",
+    compatible: product.compatible || "",
+    specs: product.specs?.length ? product.specs : [{ name: "", value: "" }],
     price: product.price || "",
     offer_price: product.offer_price || "",
     image: product.image || "",
@@ -70,7 +86,9 @@ export default function AdminPanel() {
     const needle = query.trim().toLowerCase();
     if (!needle) return products;
     return products.filter((product) =>
-      `${product.title} ${product.brand}`.toLowerCase().includes(needle)
+      `${product.title} ${product.brand} ${product.code || ""} ${product.sku || ""}`
+        .toLowerCase()
+        .includes(needle)
     );
   }, [products, query]);
 
@@ -241,7 +259,7 @@ export default function AdminPanel() {
                 className={inputClass}
               />
             </Field>
-            <Field label="Бренд">
+            <Field label="Бренд техніки">
               <input
                 required
                 list="brands"
@@ -254,6 +272,46 @@ export default function AdminPanel() {
                   <option key={brand} value={brand} />
                 ))}
               </datalist>
+            </Field>
+            <Field label="Виробник">
+              <input
+                value={form.manufacturer}
+                onChange={(event) => update("manufacturer", event.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Артикул">
+              <input
+                value={form.sku}
+                onChange={(event) => update("sku", event.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Код">
+              <input
+                value={form.code}
+                onChange={(event) => update("code", event.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Наявність">
+              <select
+                value={form.stock}
+                onChange={(event) => update("stock", event.target.value)}
+                className={inputClass}
+              >
+                <option value="in">В наявності</option>
+                <option value="order">Під замовлення</option>
+                <option value="out">Немає в наявності</option>
+              </select>
+            </Field>
+            <Field label="Гарантія">
+              <input
+                value={form.warranty}
+                onChange={(event) => update("warranty", event.target.value)}
+                placeholder="12 місяців"
+                className={inputClass}
+              />
             </Field>
             <Field label="Назва англійською">
               <input
@@ -333,6 +391,81 @@ export default function AdminPanel() {
                 <option value="new">New</option>
               </select>
             </Field>
+            <label className="block text-sm md:col-span-2">
+              <span className="block mb-1">Опис</span>
+              <textarea
+                value={form.description}
+                onChange={(event) => update("description", event.target.value)}
+                rows={4}
+                className="w-full border border-qgray-border px-3 py-2 outline-none focus:border-qyellow"
+              />
+            </label>
+            <div className="md:col-span-2">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Характеристики</span>
+                <button
+                  type="button"
+                  className="text-sm hover:text-qyellow"
+                  onClick={() =>
+                    update("specs", [...form.specs, { name: "", value: "" }])
+                  }
+                >
+                  Додати рядок
+                </button>
+              </div>
+              <div className="space-y-2">
+                {form.specs.map((row, index) => (
+                  <div key={index} className="grid grid-cols-[1fr_1fr_auto] gap-2">
+                    <input
+                      value={row.name}
+                      placeholder="Назва, напр. Фреон"
+                      onChange={(event) => {
+                        const specs = form.specs.map((item, itemIndex) =>
+                          itemIndex === index ? { ...item, name: event.target.value } : item
+                        );
+                        update("specs", specs);
+                      }}
+                      className={inputClass}
+                    />
+                    <input
+                      value={row.value}
+                      placeholder="Значення"
+                      onChange={(event) => {
+                        const specs = form.specs.map((item, itemIndex) =>
+                          itemIndex === index ? { ...item, value: event.target.value } : item
+                        );
+                        update("specs", specs);
+                      }}
+                      className={inputClass}
+                    />
+                    <button
+                      type="button"
+                      className="px-3 text-qred"
+                      onClick={() =>
+                        update(
+                          "specs",
+                          form.specs.length === 1
+                            ? [{ name: "", value: "" }]
+                            : form.specs.filter((_, itemIndex) => itemIndex !== index)
+                        )
+                      }
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <label className="block text-sm md:col-span-2">
+              <span className="block mb-1">Сумісність з моделями</span>
+              <textarea
+                value={form.compatible}
+                onChange={(event) => update("compatible", event.target.value)}
+                rows={4}
+                placeholder={"По одному в рядку:\nIndesit BAN10"}
+                className="w-full border border-qgray-border px-3 py-2 outline-none focus:border-qyellow"
+              />
+            </label>
             <label className="flex items-center gap-2 text-sm md:col-span-2">
               <input
                 type="checkbox"
@@ -395,7 +528,11 @@ export default function AdminPanel() {
                       className="h-14 w-14 object-cover"
                     />
                   </td>
-                  <td className="p-3 max-w-xs">{product.title}</td>
+                  <td className="p-3 max-w-xs">
+                    <p>{product.title}</p>
+                    {product.code && <p className="text-xs text-qgray">Код: {product.code}</p>}
+                    {product.sku && <p className="text-xs text-qgray">Артикул: {product.sku}</p>}
+                  </td>
                   <td className="p-3">{product.brand}</td>
                   <td className="p-3 whitespace-nowrap">
                     <span className="text-qgray line-through mr-2">{product.price}</span>

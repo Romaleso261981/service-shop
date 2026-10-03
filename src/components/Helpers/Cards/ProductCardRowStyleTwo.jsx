@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useLanguage } from "../../../i18n/LanguageProvider";
+import ProductFacts from "../ProductFacts";
 
 export default function ProductCardRowStyleTwo({ className, datas }) {
   const { itemTitle } = useLanguage();
@@ -19,11 +20,12 @@ export default function ProductCardRowStyleTwo({ className, datas }) {
             />
           </div>
           <div className="flex-1 h-full flex flex-col justify-center ">
-            <Link href="/single-product">
+            <Link href={`/product/${datas.id}`}>
               <p className="title mb-2 sm:text-[15px] text-[13px] font-600 text-qblack leading-[24px] line-clamp-1 hover:text-blue-600">
                 {itemTitle(datas)}
               </p>
             </Link>
+            <ProductFacts datas={datas} />
 
             <p className="price">
               <span className="main-price text-qgray line-through font-600 text-[18px]">
