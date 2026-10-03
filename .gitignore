@@ -4,6 +4,7 @@ out/
 .vercel/
 .env
 .env*.local
+src/data/users.json
 *.pem
 .DS_Store
 npm-debug.log*

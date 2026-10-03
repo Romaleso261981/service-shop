@@ -3,8 +3,8 @@ import Cart from "../../../Cart";
 import Compair from "../../../Helpers/icons/Compair";
 import ThinBag from "../../../Helpers/icons/ThinBag";
 import ThinLove from "../../../Helpers/icons/ThinLove";
-import ThinPeople from "../../../Helpers/icons/ThinPeople";
 import SearchBox from "../../../Helpers/SearchBox";
+import AccountMenu from "./AccountMenu";
 
 export default function Middlebar({ className, type }) {
   return (
@@ -96,13 +96,7 @@ export default function Middlebar({ className, type }) {
                   className="absolute -right-[45px] top-11 z-50 hidden group-hover:block"
                 />
               </div>
-              <div>
-                <Link href="/profile">
-                  <span>
-                    <ThinPeople />
-                  </span>
-                </Link>
-              </div>
+              <AccountMenu />
             </div>
           </div>
         </div>
