@@ -65,7 +65,7 @@ export default function AccountMenu() {
       {user?.status === "admin" && (
         <Link
           href="/admin"
-          className="inline-flex h-9 items-center bg-qblack px-3 text-xs font-600 text-white"
+          className="inline-flex h-9 items-center bg-qyellow px-3 text-xs font-600 text-qblack"
         >
           {t("admin")}
         </Link>

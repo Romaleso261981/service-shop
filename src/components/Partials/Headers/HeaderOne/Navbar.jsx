@@ -446,7 +446,7 @@ export default function Navbar({ className, type }) {
             </div>
             <div className="become-seller-btn">
               <Link href="/become-saller">
-                <div className="black-btn h-[40px] px-4 flex justify-center items-center cursor-pointer">
+                <div className="bg-white text-qblack h-[40px] px-4 flex justify-center items-center cursor-pointer">
                   <div className="flex space-x-2 items-center">
                     <span className="text-sm font-600 whitespace-nowrap">
                       {t("becomeSeller")}
@@ -465,7 +465,7 @@ export default function Navbar({ className, type }) {
                           width="6.94106"
                           height="1.54246"
                           transform="rotate(45 1.08984 0)"
-                          fill="white"
+                          fill="currentColor"
                         />
                         <rect
                           x="6"
@@ -473,7 +473,7 @@ export default function Navbar({ className, type }) {
                           width="6.94106"
                           height="1.54246"
                           transform="rotate(135 6 4.9082)"
-                          fill="white"
+                          fill="currentColor"
                         />
                       </svg>
                     </span>

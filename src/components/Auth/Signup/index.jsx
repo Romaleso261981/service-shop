@@ -111,8 +111,8 @@ export default function Signup() {
                   key={value}
                   className={`flex h-12 cursor-pointer items-center justify-center rounded-xl border text-sm font-medium transition ${
                     form.role === value
-                      ? "border-qblack bg-qblack text-white"
-                      : "border-[#E2E2E8] bg-[#F7F7F8] text-qblack hover:border-[#C8C8D0]"
+                      ? "border-qyellow bg-qyellow text-qblack"
+                      : "border-[#E2E2E8] bg-white text-qblack hover:border-qyellow"
                   }`}
                 >
                   <input
@@ -130,7 +130,7 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="black-btn flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white"
+              className="flex h-11 w-full items-center justify-center rounded-xl bg-qyellow text-sm font-semibold text-qblack"
             >
               {loading ? "..." : t("createAccount")}
             </button>

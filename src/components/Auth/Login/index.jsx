@@ -87,7 +87,7 @@ export default function Login({ role = "retail" }) {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="black-btn text-sm text-white w-full h-[50px] font-semibold flex justify-center items-center"
+                      className="bg-qyellow text-qblack text-sm w-full h-[50px] font-semibold flex justify-center items-center"
                     >
                       <span>
                         {loading
