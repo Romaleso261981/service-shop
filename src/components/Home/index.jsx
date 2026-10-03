@@ -1,3 +1,4 @@
+import { variantPath } from "../../lib/imageSizes";
 import SectionStyleFour from "../Helpers/SectionStyleFour";
 import SectionStyleOne from "../Helpers/SectionStyleOne";
 import SectionStyleThree from "../Helpers/SectionStyleThree";
@@ -11,18 +12,37 @@ import BrandSection from "./BrandSection";
 import CampaignCountDown from "./CampaignCountDown";
 import ProductsAds from "./ProductsAds";
 
+function photos(products) {
+  const seen = new Set();
+  return products.filter((product) => {
+    if (!product?.image || seen.has(product.image)) return false;
+    seen.add(product.image);
+    return true;
+  });
+}
+
 export default function Home({ products = [] }) {
   const brands = [];
   products.forEach((product) => {
     brands.push(product.brand);
   });
+  const shots = photos(products);
+  const shot = (index) => (shots.length ? shots[index % shots.length] : null);
+  const ad = (index, width, height) => {
+    const product = shot(index);
+    return product ? variantPath(product.image, width, height) : "";
+  };
+  const href = (index) => {
+    const product = shot(index);
+    return product ? `/product/${product.id}` : "/all-products";
+  };
 
   return (
     <>
       <Layout>
         {/* {ads && <Ads handler={adsHandle} />} */}
         <div className="btn w-5 h-5 "></div>
-        <Banner className="banner-wrapper mb-[60px]" />
+        <Banner className="banner-wrapper mb-[60px]" products={shots} />
         <SectionStyleOne
           products={products}
           brands={brands}
@@ -54,7 +74,8 @@ export default function Home({ products = [] }) {
           <BestSellers />
         </ViewMoreTitle>
         <ProductsAds
-          ads={[`/assets/images/bannera-1.png`, `/assets/images/bannera-2.png`]}
+          ads={[ad(3, 570, 295), ad(4, 571, 295)]}
+          links={[href(3), href(4)]}
           sectionHeight="sm:h-[295px] h-full"
           className="products-ads-section mb-[60px]"
         />
@@ -68,7 +89,8 @@ export default function Home({ products = [] }) {
           className="category-products mb-[60px]"
         />
         <ProductsAds
-          ads={[`/assets/images/bannera-3.png`]}
+          ads={[ad(5, 1170, 293)]}
+          links={[href(5)]}
           className="products-ads-section mb-[60px]"
         />
         <SectionStyleThree
@@ -79,7 +101,8 @@ export default function Home({ products = [] }) {
         />
         <ProductsAds
           sectionHeight="164"
-          ads={[`assets/images/bannera-4.png`]}
+          ads={[ad(6, 1170, 164)]}
+          links={[href(6)]}
           className="products-ads-section mb-[60px]"
         />
         <SectionStyleFour

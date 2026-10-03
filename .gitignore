@@ -5,6 +5,7 @@ out/
 .env
 .env*.local
 src/data/users.json
+public/assets/images/*-*x*.webp
 *.pem
 .DS_Store
 npm-debug.log*

@@ -18,6 +18,6 @@ export async function POST(request) {
     return NextResponse.json({ error: "Фото більше за 5 МБ" }, { status: 400 });
   }
   const bytes = Buffer.from(await file.arrayBuffer());
-  const image = saveImage(file.name || "photo.jpg", bytes);
+  const image = await saveImage(file.name || "photo.jpg", bytes);
   return NextResponse.json({ image });
 }

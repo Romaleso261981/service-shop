@@ -1,9 +1,18 @@
 "use client";
 import Link from "next/link";
 import { useLanguage } from "../../i18n/LanguageProvider";
+import { variantPath } from "../../lib/imageSizes";
 
-export default function Banner({ className }) {
-  const { t } = useLanguage();
+function pick(products, index) {
+  if (!products.length) return null;
+  return products[index % products.length];
+}
+
+export default function Banner({ className, products = [] }) {
+  const { t, itemTitle } = useLanguage();
+  const main = pick(products, 0);
+  const top = pick(products, 1);
+  const bottom = pick(products, 2);
   return (
     <>
       <div className={`w-full ${className || ""}`}>
@@ -11,15 +20,23 @@ export default function Banner({ className }) {
           <div className="main-wrapper w-full">
             <div className="banner-card xl:flex xl:space-x-[30px] xl:h-[600px]  mb-[30px]">
               <div data-aos="fade-right" className="xl:w-[740px] w-full h-full">
-                <Link href="/single-product">
+                <Link href={main ? `/product/${main.id}` : "/all-products"}>
                   <picture>
                     <source
                       media="(min-width:1025px)"
-                      srcSet={`/assets/images/banner-1.png`}
+                      srcSet={
+                        main
+                          ? variantPath(main.image, 740, 600)
+                          : "/assets/images/banner-1.png"
+                      }
                     />
                     <img
-                      src={`/assets/images/banner-1.2.png`}
-                      alt=""
+                      src={
+                        main
+                          ? variantPath(main.image, 740, 400)
+                          : "/assets/images/banner-1.2.png"
+                      }
+                      alt={main ? itemTitle(main) : ""}
                       className="w-full max-w-full h-auto object-cover"
                     />
                   </picture>
@@ -30,20 +47,28 @@ export default function Banner({ className }) {
                 className="flex-1 flex xl:flex-col flex-row  xl:space-y-[30px] h-full"
               >
                 <div className="w-full xl:h-1/2">
-                  <Link href="/single-product">
+                  <Link href={top ? `/product/${top.id}` : "/all-products"}>
                     <img
-                      src={`/assets/images/banner-2.png`}
-                      alt=""
-                      className="w-full h-full"
+                      src={
+                        top
+                          ? variantPath(top.image, 400, 285)
+                          : "/assets/images/banner-2.png"
+                      }
+                      alt={top ? itemTitle(top) : ""}
+                      className="w-full h-full object-cover"
                     />
                   </Link>
                 </div>
                 <div className="w-full xl:h-1/2">
-                  <Link href="/single-product">
+                  <Link href={bottom ? `/product/${bottom.id}` : "/all-products"}>
                     <img
-                      src={`/assets/images/banner-3.png`}
-                      alt=""
-                      className="w-full h-full"
+                      src={
+                        bottom
+                          ? variantPath(bottom.image, 400, 286)
+                          : "/assets/images/banner-3.png"
+                      }
+                      alt={bottom ? itemTitle(bottom) : ""}
+                      className="w-full h-full object-cover"
                     />
                   </Link>
                 </div>

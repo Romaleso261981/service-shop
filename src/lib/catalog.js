@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
+import { IMAGE_SIZES, isVariantName, variantName } from "./imageSizes.js";
 
 const dataPath = path.join(process.cwd(), "src/data/products.json");
 const imageDir = path.join(process.cwd(), "public/assets/images");
@@ -19,18 +21,43 @@ export function writeProducts(products) {
 export function listImages() {
   return fs
     .readdirSync(imageDir)
-    .filter((name) => /\.(jpe?g|png|webp|gif)$/i.test(name))
+    .filter((name) => /\.(jpe?g|png|webp|gif)$/i.test(name) && !isVariantName(name))
     .sort((a, b) => {
       const rank = (name) => (name.startsWith("part-") ? 0 : 1);
       return rank(a) - rank(b) || a.localeCompare(b);
     });
 }
 
-export function saveImage(filename, bytes) {
+async function writeVariants(filename, input) {
+  await Promise.all(
+    IMAGE_SIZES.map(({ width, height }) =>
+      sharp(input)
+        .rotate()
+        .resize(width, height, { fit: "cover", position: "centre" })
+        .webp({ quality: 82 })
+        .toFile(path.join(imageDir, variantName(filename, width, height)))
+    )
+  );
+}
+
+export async function saveImage(filename, bytes) {
   const safe = filename.replace(/[^a-zA-Z0-9._-]/g, "");
   const stored = `${Date.now()}-${safe || "photo.jpg"}`;
   fs.writeFileSync(path.join(imageDir, stored), bytes);
+  await writeVariants(stored, bytes);
   return stored;
+}
+
+export async function ensureProductVariants(filenames) {
+  const unique = [...new Set(filenames.filter((name) => name && !isVariantName(name)))];
+  for (const name of unique) {
+    const source = path.join(imageDir, path.basename(name));
+    if (!fs.existsSync(source)) continue;
+    const missing = IMAGE_SIZES.some(
+      ({ width, height }) => !fs.existsSync(path.join(imageDir, variantName(name, width, height)))
+    );
+    if (missing) await writeVariants(name, source);
+  }
 }
 
 export function formatPrice(value) {
