@@ -1,29 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Arrow from "../../../Helpers/icons/Arrow";
 import Link from "next/link";
 import CategoryMenu from "../CategoryMenu";
 
 export default function Navbar({ className, type }) {
   const [categoryToggle, setToggle] = useState(false);
-  const [elementsSize, setSize] = useState("0px");
-  // const getItems = document.querySelectorAll(`.categories-list li`).length;
-  // if (categoryToggle && getItems > 0) {
-  //   setSize(`${40 * getItems}px`);
-  // }
-  const handler = () => {
-    setToggle(!categoryToggle);
-  };
-  useEffect(() => {
-    if (categoryToggle) {
-      const getItems = document.querySelectorAll(`.categories-list li`).length;
-      if (categoryToggle && getItems > 0) {
-        setSize(`${42 * getItems}px`);
-      }
-    } else {
-      setSize(`0px`);
-    }
-  }, [categoryToggle]);
 
   return (
     <div
@@ -35,9 +17,13 @@ export default function Navbar({ className, type }) {
         <div className="w-full h-full relative">
           <div className="w-full h-full flex justify-between items-center">
             <div className="category-and-nav flex xl:space-x-7 space-x-3 items-center">
-              <div className="category w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative">
+              <div
+                className="category w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative"
+                onMouseEnter={() => setToggle(true)}
+                onMouseLeave={() => setToggle(false)}
+              >
                 <button
-                  onClick={handler}
+                  onClick={() => setToggle(true)}
                   type="button"
                   className="w-full h-full flex justify-between items-center"
                 >
@@ -68,12 +54,6 @@ export default function Navbar({ className, type }) {
                     />
                   </div>
                 </button>
-                {categoryToggle && (
-                  <div
-                    className="fixed top-0 left-0 w-full h-full -z-10"
-                    onClick={handler}
-                  ></div>
-                )}
                 <div
                   className={`category-dropdown w-[420px] absolute left-0 top-[53px] bg-white shadow-lg ${
                     categoryToggle ? "overflow-visible" : "overflow-hidden"
@@ -85,125 +65,16 @@ export default function Navbar({ className, type }) {
               </div>
               <div className="nav">
                 <ul className="nav-wrapper flex xl:space-x-10 space-x-5">
-                  <li className="relative">
-                    <span
-                      className={`flex items-center text-sm font-600 cursor-pointer ${
-                        type === 3 ? "text-white" : "text-qblacktext"
-                      }`}
-                    >
-                      <span>Homepage</span>
-                      <span className="ml-1.5 ">
-                        <Arrow className="fill-current" />
-                      </span>
-                    </span>
-                    <div className="sub-menu w-[220px] absolute left-0 top-[60px]">
-                      <div
-                        className="w-full bg-white flex justify-between items-center "
-                        style={{
-                          boxShadow: "0px 15px 50px 0px rgba(0, 0, 0, 0.14)",
-                        }}
+                  <li>
+                    <Link href="/">
+                      <span
+                        className={`flex items-center text-sm font-600 cursor-pointer ${
+                          type === 3 ? "text-white" : "text-qblacktext"
+                        }`}
                       >
-                        <div className="categories-wrapper w-full h-full p-5">
-                          <div>
-                            <div className="category-items">
-                              <ul className="flex flex-col space-y-2">
-                                <li>
-                                  <Link href="/">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home One
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-two">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Two
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-three">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Three
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-four">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Four
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-five">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Five
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-six">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Six
-                                    </span>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="/home-seven">
-                                    <span
-                                      className={`text-qgray text-sm font-400 border-b border-transparent   ${
-                                        type === 3
-                                          ? "hover:text-qh3-blue hover:border-qh3-blue"
-                                          : "hover:text-qyellow hover:border-qyellow"
-                                      }`}
-                                    >
-                                      Home Seven
-                                    </span>
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                        Home
+                      </span>
+                    </Link>
                   </li>
                   <li>
                     <span

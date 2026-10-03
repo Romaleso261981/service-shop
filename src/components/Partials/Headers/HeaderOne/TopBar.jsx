@@ -42,7 +42,7 @@ export default function TopBar({ className }) {
                 <div className="language-select flex space-x-1 items-center">
                   <Selectbox
                     className="w-fit"
-                    datas={["🇬🇧 English", "🇷🇺 Русский", "🇺🇦 Українська"]}
+                    datas={["🇬🇧 en", "🇷🇺 rus", "🇺🇦 uk"]}
                   />
                   <div>
                     <Arrow className="fill-current qblack" />
