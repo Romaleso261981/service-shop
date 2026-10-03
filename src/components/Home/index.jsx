@@ -1,4 +1,3 @@
-import datas from "../../data/products.json";
 import SectionStyleFour from "../Helpers/SectionStyleFour";
 import SectionStyleOne from "../Helpers/SectionStyleOne";
 import SectionStyleThree from "../Helpers/SectionStyleThree";
@@ -12,8 +11,7 @@ import BrandSection from "./BrandSection";
 import CampaignCountDown from "./CampaignCountDown";
 import ProductsAds from "./ProductsAds";
 
-export default function Home() {
-  const { products } = datas;
+export default function Home({ products = [] }) {
   const brands = [];
   products.forEach((product) => {
     brands.push(product.brand);

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import productDatas from "../../data/products.json";
 import BreadcrumbCom from "../BreadcrumbCom";
 import ProductCardStyleOne from "../Helpers/Cards/ProductCardStyleOne";
 import DataIteration from "../Helpers/DataIteration";
@@ -8,7 +7,7 @@ import Layout from "../Partials/Layout";
 import ProductsFilter from "./ProductsFilter";
 import { useLanguage } from "../../i18n/LanguageProvider";
 
-export default function AllProductPage() {
+export default function AllProductPage({ products = [] }) {
   const { t } = useLanguage();
   const [filters, setFilter] = useState({
     mobileLaptop: false,
@@ -52,8 +51,6 @@ export default function AllProductPage() {
     setStorage(value);
   };
   const [filterToggle, setToggle] = useState(false);
-
-  const { products } = productDatas;
 
   return (
     <>

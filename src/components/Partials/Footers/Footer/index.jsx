@@ -165,6 +165,9 @@ export default function Footer({ type }) {
                 Quomodosoft
               </a>
               {t("rights")}
+              <Link href="/admin" className="font-500 text-qblack mx-1">
+                {t("admin")}
+              </Link>
             </span>
           </div>
           <div className="">

@@ -41,6 +41,12 @@ export function LanguageProvider({ children }) {
       t,
       category: (name) => categoryLabel(name, lang),
       product: (title) => productTitle(title, lang),
+      itemTitle: (datas) => {
+        if (!datas) return "";
+        if (lang === "en" && datas.title_en) return datas.title_en;
+        if (lang === "rus" && datas.title_ru) return datas.title_ru;
+        return productTitle(datas.title || "", lang);
+      },
     };
   }, [lang]);
 
@@ -59,6 +65,7 @@ export function useLanguage() {
       t,
       category: (name) => categoryLabel(name, "en"),
       product: (title) => productTitle(title, "en"),
+      itemTitle: (datas) => productTitle(datas?.title || "", "en"),
     };
   }
   return context;

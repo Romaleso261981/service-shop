@@ -7,7 +7,7 @@ import ThinLove from "../icons/ThinLove";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 
 export default function ProductCardStyleOne({ datas, type }) {
-  const { t, product } = useLanguage();
+  const { t, itemTitle } = useLanguage();
   const available =
     (datas.cam_product_sale /
       (datas.cam_product_available + datas.cam_product_sale)) *
@@ -94,7 +94,7 @@ export default function ProductCardStyleOne({ datas, type }) {
         </div>
         <Link href="/single-product">
           <p className="title mb-2 text-[15px] font-600 text-qblack leading-[24px] line-clamp-2 hover:text-blue-600">
-            {product(datas.title)}
+            {itemTitle(datas)}
           </p>
         </Link>
         <p className="price">
