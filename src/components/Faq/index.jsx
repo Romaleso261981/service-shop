@@ -1,15 +1,19 @@
+"use client";
+
+import { useLanguage } from "../../i18n/LanguageProvider";
 import Accodion from "../Helpers/Accodion";
 import InputCom from "../Helpers/InputCom";
 import PageTitle from "../Helpers/PageTitle";
 import Layout from "../Partials/Layout";
 
 export default function Faq() {
+  const { t } = useLanguage();
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="faq-page-wrapper w-full mb-10">
         <div className="page-title w-full">
           <PageTitle
-            title="Frequently Asked Questions"
+            title={t("faqTitle")}
             breadcrumb={[
               { name: "home", path: "/" },
               { name: "FAQ", path: "/faq" },
@@ -22,47 +26,24 @@ export default function Faq() {
           <div className="main-wrapper w-full lg:flex lg:space-x-[30px]">
             <div className="lg:w-1/2 w-full mb-10 lg:mb-0">
               <h1 className="text-qblack font-bold text-[22px] mb-4">
-                Frequently asked questions
+                {t("faqTitle")}
               </h1>
               <div className="flex flex-col space-y-7 justify-between">
-                <Accodion
-                  title="01. How does information technology work?"
-                  des="There are many variations of passages of Lorem Ipsum available into the 
-but the majority have suffered alteration in some form, by injecte find to a
-humour, or randomised words"
-                />
-                <Accodion
-                  init
-                  title="02. How can I become IT manager?"
-                  des="There are many variations of passages of Lorem Ipsum available into the 
-but the majority have suffered alteration in some form, by injecte find to a
-humour, or randomised words"
-                />
-                <Accodion
-                  title="03. What are the latest trends in IT?"
-                  des="There are many variations of passages of Lorem Ipsum available into the 
-but the majority have suffered alteration in some form, by injecte find to a
-humour, or randomised words"
-                />
-                <Accodion
-                  title="04. How long should a business plan be?"
-                  des="There are many variations of passages of Lorem Ipsum available into the 
-but the majority have suffered alteration in some form, by injecte find to a
-humour, or randomised words"
-                />
-                <Accodion
-                  title="05. How work the support policy?"
-                  des="There are many variations of passages of Lorem Ipsum available into the 
-but the majority have suffered alteration in some form, by injecte find to a
-humour, or randomised words"
-                />
+                {["1", "2", "3", "4", "5"].map((n) => (
+                  <Accodion
+                    key={n}
+                    init={n === "1"}
+                    title={`${n}. ${t(`faqQ${n}`)}`}
+                    des={t(`faqA${n}`)}
+                  />
+                ))}
               </div>
             </div>
             <div className="flex-1">
               <div className="bg-white sm:p-10 p-5">
                 <div className="title flex flex-col items-center">
                   <h1 className="lg:text-[34px] text-xl font-bold text-qblack">
-                    Have Any Qustion
+                    {t("faqAsk")}
                   </h1>
                   <span className="-mt-5 block">
                     <svg
@@ -84,33 +65,33 @@ humour, or randomised words"
                 <div className="inputs mt-5">
                   <div className="mb-4">
                     <InputCom
-                      label="Frist Name*"
-                      placeholder="Demo Name"
+                      label={t("firstName")}
+                      placeholder={t("yourName")}
                       name="first_name"
                       inputClasses="h-[50px]"
                     />
                   </div>
                   <div className="mb-4">
                     <InputCom
-                      label="Email Address*"
-                      placeholder="info@quomodosoft.com"
+                      label={t("emailAddress")}
+                      placeholder="name@email.com"
                       name="email"
                       inputClasses="h-[50px]"
                     />
                   </div>
                   <div className="mb-5">
                     <h6 className="input-label text-qgray capitalize text-[13px] font-normal block mb-2 ">
-                      Message*
+                      {t("message")}
                     </h6>
                     <textarea
-                      placeholder="Type your message here"
+                      placeholder={t("yourMessage")}
                       className="w-full h-[105px] focus:ring-0 focus:outline-none p-3 border border-qgray-border placeholder:text-sm"
                     ></textarea>
                   </div>
                   <div>
                     <a href="#">
                       <div className="black-btn text-sm font-semibold w-full h-[50px] flex justify-center items-center">
-                        <span>Send Now</span>
+                        <span>{t("sendNow")}</span>
                       </div>
                     </a>
                   </div>

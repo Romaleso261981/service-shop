@@ -1,6 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "../../../i18n/LanguageProvider";
+
+const postKeys = {
+  "62bd7ab2de5495e7ef2dd2cd": ["blog1Title", "blog1Text"],
+  "62bd7ab283077573adcca363": ["blog2Title", "blog2Text"],
+  "62bd7ab29e9c84cd731e3759": ["blog3Title", "blog3Text"],
+  "62bd7ab27479861a15353602": ["blog4Title", "blog4Text"],
+  "62bd7ab2580273f8fdd55ba6": ["blog5Title", "blog5Text"],
+  "62bd7ab2a7903a05be388a60": ["blog6Title", "blog6Text"],
+};
 
 export default function BlogCard({ className, datas }) {
+  const { t } = useLanguage();
+  const keys = postKeys[datas.id];
+  const title = keys ? t(keys[0]) : datas.title;
+  const article = keys ? t(keys[1]) : datas.article;
   return (
     <div
       className={`blog-card-wrapper w-full border border-[#D3D3D3] ${
@@ -32,7 +48,7 @@ export default function BlogCard({ className, datas }) {
               </svg>
             </span>
             <span className="text-base text-qgraytwo capitalize">
-              By {datas.by}
+              {t("blogBy")}
             </span>
           </div>
           <div className="flex space-x-1.5 items-center">
@@ -59,24 +75,24 @@ export default function BlogCard({ className, datas }) {
               </svg>
             </span>
             <span className="text-base text-qgraytwo">
-              {datas.comments_length} Comments
+              {datas.comments_length} {t("comments")}
             </span>
           </div>
         </div>
         <div className="details">
           <Link href="/blogs/blog">
             <h1 className="text-[22px] text-qblack hover:text-blue-500 font-semibold line-clamp-2 mb-1 capitalize">
-              {datas.title}
+              {title}
             </h1>
           </Link>
           <p className="text-qgraytwo text-[15px] leading-[30px] line-clamp-2 mb-3">
-            {datas.article}
+            {article}
           </p>
           {/* view more btn */}
           <a href="#">
             <div className="flex items-center space-x-2">
               <span className="text-qblack text-base font-semibold">
-                View More
+                {t("viewMore")}
               </span>
               <span>
                 <svg

@@ -1,13 +1,17 @@
+"use client";
+
+import { useLanguage } from "../../i18n/LanguageProvider";
 import InputCom from "../Helpers/InputCom";
 import PageTitle from "../Helpers/PageTitle";
 import Layout from "../Partials/Layout";
 
 export default function Contact() {
+  const { t } = useLanguage();
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="page-title mb-10">
         <PageTitle
-          title="Contact"
+          title={t("contact")}
           breadcrumb={[
             { name: "home", path: "/" },
             { name: "contact", path: "/contact" },
@@ -19,11 +23,10 @@ export default function Contact() {
           <div className="main-wrapper w-full lg:flex lg:space-x-[30px]">
             <div className="lg:w-1/2 w-full">
               <h1 className="text-[22px] font-semibold text-qblack leading-[30px] mb-1">
-                Contact Information
+                {t("contactInfo")}
               </h1>
               <p className="text-[15px] text-qgraytwo leading-[30px] mb-5">
-                Fill the form below or write us .We will help you as soon as
-                possible.
+                {t("contactNote")}
               </p>
 
               <div className="xl:flex xl:space-x-[30px] mb-[30px]">
@@ -55,13 +58,13 @@ export default function Contact() {
                     </svg>
                   </div>
                   <p className="text-[22px] text-black leading-[30px] text-center font-semibold">
-                    Phone
+                    {t("phone")}
                   </p>
                   <p className="text-[15px] text-black leading-[30px] text-center">
-                    +(323) 9847 3847 383
+                    0 (800) 752 110
                   </p>
                   <p className="text-[15px] text-black leading-[30px] text-center">
-                    +(434) 5466 5467 443
+                    (067) 468 33 55
                   </p>
                 </div>
                 <div className="xl:w-1/2 w-full h-[196px] flex flex-col item justify-center bg-[#D3EFFF] p-5">
@@ -102,13 +105,10 @@ export default function Contact() {
                     </svg>
                   </div>
                   <p className="text-[22px] text-black leading-[30px] text-center font-semibold">
-                    Email
+                    {t("emailAddress")}
                   </p>
                   <p className="text-[15px] text-black leading-[30px] text-center">
-                    Demoemail@gmail.com
-                  </p>
-                  <p className="text-[15px] text-black leading-[30px] text-center">
-                    rafiqulislamsuvobd@gmail.com
+                    {t("writeViaForm")}
                   </p>
                 </div>
               </div>
@@ -132,18 +132,17 @@ export default function Contact() {
                   </span>
                   <div>
                     <h1 className="text-[22px] font-semibold text-qblack leading-[30px] mb-2">
-                      Address
+                      {t("address")}
                     </h1>
                     <p className="text-[15px] text-qblack leading-[30px]">
-                      4517 Washington Ave. Manchester, Road 2342, <br />
-                      Kentucky 39495
+                      {t("countryName")}
                     </p>
                   </div>
                 </div>
                 <div className="w-full h-[206px] mt-5">
                   <iframe
                     title="newWork"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.94539481518!2d-74.26675559025064!3d40.69739290398433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1656755618576!5m2!1sen!2sbd"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d325518.68780316407!2d30.2525113!3d50.401699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf4ee15a4505%3A0x764931d2170146fe!2sKyiv%2C%20Ukraine!5e0!3m2!1sen!2sua"
                     style={{ border: "0", width: "100%", height: "100%" }}
                     allowFullScreen=""
                     loading="lazy"
@@ -154,7 +153,7 @@ export default function Contact() {
             <div className="flex-1 bg-white sm:p-10 p-3">
               <div className="title flex flex-col items-center">
                 <h1 className="text-[34px] font-bold text-qblack">
-                  Get In Touch
+                  {t("getInTouch")}
                 </h1>
                 <span className="-mt-5 block">
                   <svg
@@ -176,41 +175,41 @@ export default function Contact() {
               <div className="inputs mt-5">
                 <div className="mb-4">
                   <InputCom
-                    label="Frist Name*"
-                    placeholder="Demo Name"
+                    label={t("firstName")}
+                    placeholder={t("yourName")}
                     name="first_name"
                     inputClasses="h-[50px]"
                   />
                 </div>
                 <div className="mb-4">
                   <InputCom
-                    label="Email Address*"
-                    placeholder="info@quomodosoft.com"
+                    label={t("emailAddress")}
+                    placeholder="name@email.com"
                     name="email"
                     inputClasses="h-[50px]"
                   />
                 </div>
                 <div className="mb-4">
                   <InputCom
-                    label="Subject*"
-                    placeholder="Your Subject here"
+                    label={t("subject")}
+                    placeholder={t("yourSubject")}
                     name="subject"
                     inputClasses="h-[50px]"
                   />
                 </div>
                 <div className="mb-5">
                   <h6 className="input-label text-qgray capitalize text-[13px] font-normal block mb-2 ">
-                    Message*
+                    {t("message")}
                   </h6>
                   <textarea
-                    placeholder="Type your message here"
+                    placeholder={t("yourMessage")}
                     className="w-full h-[105px] focus:ring-0 focus:outline-none p-3 border border-qgray-border placeholder:text-sm"
                   ></textarea>
                 </div>
                 <div>
                   <a href="#">
                     <div className="black-btn text-sm font-semibold w-full h-[50px] flex justify-center items-center">
-                      <span>Send Now</span>
+                      <span>{t("sendNow")}</span>
                     </div>
                   </a>
                 </div>

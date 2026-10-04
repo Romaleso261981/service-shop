@@ -1,14 +1,18 @@
+"use client";
+
+import { useLanguage } from "../../../i18n/LanguageProvider";
 import PageTitle from "../../Helpers/PageTitle";
 import Layout from "../../Partials/Layout";
 import CommentBlog from "./CommentBlog";
 
 export default function Blog() {
+  const { t } = useLanguage();
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="blog-page-wrapper w-full">
         <div className="title-area mb-[60px]">
           <PageTitle
-            title="Blog Details"
+            title={t("blogDetails")}
             breadcrumb={[
               { name: "home", path: "/" },
               { name: "blog details", path: "/blogs/blog" },
@@ -44,7 +48,7 @@ export default function Blog() {
                         </svg>
                       </span>
                       <span className="text-base text-qgraytwo capitalize">
-                        By Admin
+                        {t("blogBy")}
                       </span>
                     </div>
                     <div className="flex space-x-1.5 items-center">
@@ -71,47 +75,16 @@ export default function Blog() {
                         </svg>
                       </span>
                       <span className="text-base text-qgraytwo">
-                        10 Comments
+                        10 {t("comments")}
                       </span>
                     </div>
                   </div>
                   <div className="details">
                     <h1 className="text-[22px] text-qblack font-semibold line-clamp-2 mb-1 capitalize">
-                      Business-to-consumer that involves selling fight into the
-                      find to a products and services
+                      {t("blog1Title")}
                     </h1>
                     <p className="text-qgraytwo text-[15px] leading-[30px] mb-10">
-                      ten occasional saw everything but conviction. Daughter
-                      returned quitting few are day advanced branched. Do
-                      enjoyment defective objection or we if favourite. At
-                      wonder afford so danger cannot former seeing. Power visit
-                      charm money add heard new other put. Attended no indulged
-                      marriage is to judgment offering landlord. Was drawing
-                      natural fat respect husband. An as noisy an offer drawn
-                      blush place. These tried for way joy wrote witty. In mr
-                      began music weeks after at begin. Education no dejection
-                      so direction pretended household do to. Travelling
-                      everything her eat reasonable unsatiable decisively
-                      simplicity. Morning request be lasting it fortune demands
-                      highest of. Whether article spirits new her covered
-                      hastily sitting her. Money witty books nor son add.
-                      Chicken age had evening believe but proceed pretend mrs.
-                      At missed advice my it no sister. Miss told ham dull knew
-                      see she spot near can.Spirither entire her called.
-                      Acceptance middletons me if discretion boisterous
-                      travelling an. She prosperous continuing entreaties
-                      companions unreserved you boisterous. Middleton sportsmen
-                      sir now cordially ask additions for. You ten occasional
-                      saw everything but conviction. Daughter returned quitting
-                      few are day advanced branched. Do enjoyment defective
-                      objection or we if favourite. At wonder afford so danger
-                      cannot former seeing. Power visit charm money add heard
-                      new other put. Attended no indulged marriage is to
-                      judgment offering landlord. Was drawing natural fat
-                      respect husband. An as noisy an offer drawn blush place.
-                      These tried for way joy wrote witty. In mr began music
-                      weeks after at begin. Education no dejection so direction
-                      pretended household do to.
+                      {t("blog1Text")}
                     </p>
                   </div>
                 </div>
@@ -134,16 +107,10 @@ export default function Blog() {
                   </div>
                   <div className="pl-[24px] mb-10">
                     <h1 className="text-[22px] font-semibold text-qblack mb-2">
-                      Selling fight into the find to a products and services?
+                      {t("blog2Title")}
                     </h1>
                     <p className="text-[15px] text-qgraytwo mb-7">
-                      ten occasional saw everything but conviction. Daughter
-                      returned quitting few are day advanced branched. Do
-                      enjoyment defective objection or we if favourite. At
-                      wonder afford so danger cannot former seeing. Power visit
-                      charm money add heard new other put. Attended no indulged
-                      marriage is to judgment offering landlord. Was drawing
-                      natural fat respect husband
+                      {t("blog2Text")}
                     </p>
                     <ul className="flex flex-col space-y-3.5">
                       <li className="flex space-x-5 items-center">
@@ -218,7 +185,7 @@ export default function Blog() {
                           </svg>
                         </span>
                         <span className="text-[15px] text-black font-medium">
-                          All the Lorem Ipsum generators
+                          {t("aboutPoint1")}
                         </span>
                       </li>
                       <li className="flex space-x-5 items-center">
@@ -243,7 +210,7 @@ export default function Blog() {
                           </svg>
                         </span>
                         <span className="text-[15px] text-black font-medium">
-                          Asearch for 'lorem ipsum' will uncover many
+                          {t("aboutPoint2")}
                         </span>
                       </li>
                     </ul>
@@ -253,19 +220,19 @@ export default function Blog() {
                   <div className="comment-area w-full mt-4">
                     <div className="w-full sm:flex justify-between items-center mb-[30px]">
                       <div className="tags flex space-x-5 items-center mb-5 sm:mb-0">
-                        <span className="text-2xl text-qblack">Tags:</span>
+                        <span className="text-2xl text-qblack">{t("tags")}</span>
                         <span className="text-base text-qgraytwo hover:text-qyellow">
-                          #Technology
+                          #{t("catalog")}
                         </span>
                         <span className="text-base text-qgraytwo hover:text-qyellow">
-                          #Agency
+                          #{t("shop")}
                         </span>
                         <span className="text-base text-qgraytwo hover:text-qyellow">
-                          #Data
+                          #{t("about")}
                         </span>
                       </div>
                       <div className="tags flex space-x-5 items-center">
-                        <span className="text-2xl text-qblack">Share:</span>
+                        <span className="text-2xl text-qblack">{t("share")}</span>
                         <div className="flex space-x-2.5 items-center">
                           <span className="text-base ">
                             <svg
@@ -354,13 +321,13 @@ export default function Blog() {
                   className="search-widget w-full p-[30px] bg-white mb-[30px]"
                 >
                   <h1 className="text-[22px] text-qblack font-bold mb-5">
-                    Search
+                    {t("search")}
                   </h1>
                   <div className="w-full h-[1px] bg-[#DCDCDC] mb-5"></div>
                   <div className="w-full h-[60px] relative">
                     <input
                       type="text"
-                      placeholder="Search"
+                      placeholder={t("searchProduct")}
                       className="w-full h-full bg-[#F9F3E9] focus:outline-none focus:ring-0 pl-5 pr-16 placeholder:text-qgraytwo"
                     />
                     <span className="absolute right-5 top-[17px]">
@@ -384,7 +351,7 @@ export default function Blog() {
                   className="latest-post-widget w-full bg-white p-[30px] mb-[30px]"
                 >
                   <h1 className="text-[22px] text-qblack font-bold mb-5">
-                    Latest Post
+                    {t("latestPost")}
                   </h1>
                   <div className="w-full h-[1px] bg-[#DCDCDC] mb-5"></div>
                   <ul className="flex flex-col space-y-5">
@@ -398,7 +365,7 @@ export default function Blog() {
                       </div>
                       <div className="flex-1 h-full flex flex-col justify-between">
                         <p className="text-[18px] text-qblack leading-7 line-clamp-2">
-                          Panels with websites city connections
+                          {t("blog2Title")}
                         </p>
                         <div className="flex space-x-3 items-center">
                           <span>
@@ -471,7 +438,7 @@ export default function Blog() {
                       </div>
                       <div className="flex-1 h-full flex flex-col justify-between">
                         <p className="text-[18px] text-qblack leading-7 line-clamp-2">
-                          Panels with websites city connections
+                          {t("blog3Title")}
                         </p>
                         <div className="flex space-x-3 items-center">
                           <span>
@@ -544,7 +511,7 @@ export default function Blog() {
                       </div>
                       <div className="flex-1 h-full flex flex-col justify-between">
                         <p className="text-[18px] text-qblack leading-7 line-clamp-2">
-                          Panels with websites city connections
+                          {t("blog4Title")}
                         </p>
                         <div className="flex space-x-3 items-center">
                           <span>
@@ -614,13 +581,13 @@ export default function Blog() {
                   className="categories-widget w-full bg-white p-[30px] mb-[30px]"
                 >
                   <h1 className="text-[22px] text-qblack font-bold mb-5">
-                    Categories
+                    {t("categories")}
                   </h1>
                   <div className="w-full h-[1px] bg-[#DCDCDC] mb-5"></div>
                   <ul className="flex flex-col space-y-5">
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Development
+                        {t("blog1Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -628,7 +595,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Guide
+                        {t("blog2Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -636,7 +603,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Inspiration
+                        {t("blog3Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -644,7 +611,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Latest News
+                        {t("latestNews")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -652,7 +619,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Revenew
+                        {t("blog4Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -660,7 +627,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Start Up
+                        {t("blog5Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -668,7 +635,7 @@ export default function Blog() {
                     </li>
                     <li className="flex justify-between items-center group">
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
-                        Technology
+                        {t("blog6Title")}
                       </span>
                       <span className="text-base text-qgraytwo group-hover:text-qyellow">
                         (6)
@@ -681,34 +648,25 @@ export default function Blog() {
                   className="popular-tag-widget w-full bg-white p-[30px] mb-[30px]"
                 >
                   <h1 className="text-[22px] text-qblack font-bold mb-5">
-                    Popular Tags
+                    {t("popularTags")}
                   </h1>
                   <div className="w-full h-[1px] bg-[#DCDCDC] mb-5"></div>
                   <div className="filter-items">
                     <div className="flex gap-[10px] flex-wrap">
                       <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Agency
+                        {t("shop")}
                       </span>
                       <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Creative
+                        {t("catalog")}
                       </span>
                       <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Data
+                        {t("faq")}
                       </span>
                       <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Technology
+                        {t("warranty")}
                       </span>
                       <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Development
-                      </span>
-                      <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Business
-                      </span>
-                      <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Idea
-                      </span>
-                      <span className="text-base bg-[#F9F3E9] hover:bg-qyellow text-[#9A9A9A] hover:text-qblack px-[14px] py-[6px] cursor-pointer mb-[5px]">
-                        Generic
+                        {t("brand")}
                       </span>
                     </div>
                   </div>
@@ -724,11 +682,11 @@ export default function Blog() {
                   <div className="w-full h-full p-[30px] bg-black bg-opacity-75 flex flex-col justify-between">
                     <div>
                       <h1 className="text-[22px] text-white font-bold mb-5">
-                        Our Newsletter
+                        {t("newsletter")}
                       </h1>
                       <div className="w-full h-[1px] bg-[#615B9C] mb-5"></div>
                       <p className="text-base text-white leading-[26px] line-clamp-2">
-                        Follow our newsletter to stay updated about us.
+                        {t("newsletterNote")}
                       </p>
                     </div>
                     <div>
@@ -736,7 +694,7 @@ export default function Blog() {
                         <input
                           type="text"
                           className="w-full h-[60px] bg-[#ECEAEC] pl-5 focus:outline-none focus:ring-0 placeholder:text-[#9A9A9A]"
-                          placeholder="Enter Your Email Address"
+                          placeholder={t("emailAddress")}
                         />
                       </div>
                       <button type="button" className="w-full h-[60px]">

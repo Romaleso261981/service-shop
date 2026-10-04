@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "../../i18n/LanguageProvider";
 import BlogCard from "../Helpers/Cards/BlogCard";
 import Star from "../Helpers/icons/Star";
 import PageTitle from "../Helpers/PageTitle";
@@ -11,6 +12,7 @@ import blog from "../../data/blogs.json";
 import DataIteration from "../Helpers/DataIteration";
 
 export default function About() {
+  const { t } = useLanguage();
   const settings = {
     slidesToShow: 3,
     slidesToScroll: 3,
@@ -54,7 +56,7 @@ export default function About() {
       <div className="about-page-wrapper w-full">
         <div className="title-area w-full">
           <PageTitle
-            title="About Us"
+            title={t("aboutUs")}
             breadcrumb={[
               { name: "home", path: "/" },
               { name: "About us", path: "/about" },
@@ -74,32 +76,20 @@ export default function About() {
               </div>
               <div className="content flex-1">
                 <h1 className="text-[18px] font-medium text-qblack mb-2.5">
-                  What is e-commerce business?
+                  {t("aboutIntroTitle")}
                 </h1>
                 <p className="text-[15px] text-qgraytwo leading-7 mb-2.5">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries but
-                  also the on leap into electronic typesetting.
+                  {t("aboutIntroText")}
                 </p>
                 <ul className="text-[15px] text-qgraytwo leading-7 list-disc ml-5 mb-5">
-                  <li>slim body with metal cover</li>
-                  <li>
-                    latest Intel Core i5-1135G7 import.metaor (4 cores / 8
-                    threads)
-                  </li>
-                  <li>8GB DDR4 RAM and fast 512GB PCIe SSD</li>
-                  <li>
-                    NVIDIA GeForce MX350 2GB GDDR5 graphics card backlit
-                    keyboard
-                  </li>
+                  <li>{t("aboutPoint1")}</li>
+                  <li>{t("aboutPoint2")}</li>
+                  <li>{t("aboutPoint3")}</li>
                 </ul>
 
                 <Link href="/contact">
                   <div className="w-[121px] h-10">
-                    <span className="yellow-btn">Contact Us</span>
+                    <span className="yellow-btn">{t("contactUs")}</span>
                   </div>
                 </Link>
               </div>
@@ -110,7 +100,7 @@ export default function About() {
         <div className="customer-feedback w-full bg-white py-[60px]">
           <div className="title flex justify-center mb-5">
             <h1 className="text-[30px] font-semibold text-qblack">
-              Customers Feedback
+              {t("customersFeedback")}
             </h1>
           </div>
           <div className="feedback-slider-wrapper w-vw relative overflow-hidden">
@@ -128,13 +118,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -145,9 +129,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -165,13 +149,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -182,9 +160,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -202,13 +180,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -219,9 +191,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -239,13 +211,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -256,9 +222,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -276,13 +242,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -293,9 +253,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -313,13 +273,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -330,9 +284,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -350,13 +304,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -367,9 +315,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -387,13 +335,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -404,9 +346,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -424,13 +366,7 @@ export default function About() {
                     <span className="text-[13px] text-qblack">(5.0)</span>
                   </div>
                   <div className="text-[15px] text-qgraytwo leading-[30px] text-justify line-clamp-6">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an into the
-                    find unknown printer took a galley of type and scrambled it
-                    to make a type inot the specimen book. It has survived not
-                    only five centuries but also the on leap into find it a
-                    electronic typesetting, remaining end to make it.
+                    {t("aboutReview")}
                   </div>
                   <div className="flex items-center space-x-2.5 mt-3">
                     <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -441,9 +377,9 @@ export default function About() {
                     </div>
                     <div>
                       <p className="text-[18px] text-qblack font-medium">
-                        Ridoy Rock
+                        {t("aboutReviewer")}
                       </p>
-                      <p className="text-qgraytwo text-[13px]">London,UK</p>
+                      <p className="text-qgraytwo text-[13px]">{t("countryName")}</p>
                     </div>
                   </div>
                 </div>
@@ -552,9 +488,9 @@ export default function About() {
                 </div>
                 <div>
                   <p className="text-black text-[15px] font-700 tracking-wide mb-1 uppercase">
-                    Free Shipping
+                    {t("freeShipping")}
                   </p>
-                  <p className="text-sm text-qblack">When ordering over $100</p>
+                  <p className="text-sm text-qblack">{t("freeShippingNote")}</p>
                 </div>
               </div>
             </div>
@@ -587,10 +523,10 @@ export default function About() {
                 </div>
                 <div>
                   <p className="text-black text-[15px] font-700 tracking-wide mb-1 uppercase">
-                    Free Return
+                    {t("freeReturn")}
                   </p>
                   <p className="text-sm text-qblack">
-                    Get Return within 30 days
+                    {t("freeReturnNote")}
                   </p>
                 </div>
               </div>
@@ -632,10 +568,10 @@ export default function About() {
                 </div>
                 <div>
                   <p className="text-black text-[15px] font-700 tracking-wide mb-1 uppercase">
-                    Secure Payment
+                    {t("securePayment")}
                   </p>
                   <p className="text-sm text-qblack">
-                    100% Secure Online Payment
+                    {t("securePaymentNote")}
                   </p>
                 </div>
               </div>
@@ -688,10 +624,10 @@ export default function About() {
                 </div>
                 <div>
                   <p className="text-black text-[15px] font-700 tracking-wide mb-1 uppercase">
-                    Best Quality
+                    {t("bestQuality")}
                   </p>
                   <p className="text-sm text-qblack">
-                    Original Product Guarenteed
+                    {t("bestQualityNote")}
                   </p>
                 </div>
               </div>
@@ -703,7 +639,7 @@ export default function About() {
           <div className="container-x mx-auto">
             <div className="blog-post-title flex justify-center items-cente mb-[30px]">
               <h1 className="text-3xl font-semibold text-qblack">
-                My Latest News
+                {t("latestNews")}
               </h1>
             </div>
 

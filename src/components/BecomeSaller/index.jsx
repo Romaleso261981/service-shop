@@ -1,11 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
+import { useLanguage } from "../../i18n/LanguageProvider";
 import InputCom from "../Helpers/InputCom";
 import PageTitle from "../Helpers/PageTitle";
 import Layout from "../Partials/Layout";
 import Link from "next/link";
 
 export default function BecomeSaller() {
+  const { t } = useLanguage();
   const [profileImg, setProfileImg] = useState(null);
   const [logoImg, setLogoImg] = useState(null);
   const [coverImg, setCoverImg] = useState(null);
@@ -56,7 +58,7 @@ export default function BecomeSaller() {
       <div className="become-saller-wrapper w-full">
         <div className="title mb-10">
           <PageTitle
-            title="Seller Application"
+            title={t("sellerApplication")}
             breadcrumb={[
               { name: "home", path: "/" },
               { name: "Become Saller", path: "/become-saller" },
@@ -70,26 +72,25 @@ export default function BecomeSaller() {
                 <div className="xl:w-[824px]">
                   <div className="title w-full mb-4">
                     <h1 className="text-[22px] font-semibold text-qblack mb-1">
-                      Seller Information
+                      {t("sellerInfo")}
                     </h1>
                     <p className="text-[15px] text-qgraytwo">
-                      Fill the form below or write us .We will help you as soon
-                      as possible.
+                      {t("fillForm")}
                     </p>
                   </div>
                   <div className="input-area">
                     <div className="flex sm:flex-row flex-col space-y-5 sm:space-y-0 sm:space-x-5 mb-5">
                       <InputCom
-                        placeholder="Demo Name"
-                        label="Frist Name*"
+                        placeholder={t("yourName")}
+                        label={t("firstName")}
                         name="fname"
                         type="text"
                         inputClasses="h-[50px]"
                       />
 
                       <InputCom
-                        placeholder="Demo Name"
-                        label="Last Name*"
+                        placeholder={t("yourName")}
+                        label={t("lastName")}
                         name="lname"
                         type="text"
                         inputClasses="h-[50px]"
@@ -97,16 +98,16 @@ export default function BecomeSaller() {
                     </div>
                     <div className="flex sm:flex-row flex-col space-y-5 sm:space-y-0 sm:space-x-5 mb-5">
                       <InputCom
-                        placeholder="Demo@gmail.com"
-                        label="Email Address*"
+                        placeholder="name@email.com"
+                        label={t("emailAddress")}
                         name="email"
                         type="email"
                         inputClasses="h-[50px]"
                       />
 
                       <InputCom
-                        placeholder="0213 *********"
-                        label="Phone*"
+                        placeholder="0 (800) 752 110"
+                        label={t("phone")}
                         name="phone"
                         type="text"
                         inputClasses="h-[50px]"
@@ -140,8 +141,8 @@ export default function BecomeSaller() {
 
                     <div className="input-item mb-5">
                       <InputCom
-                        placeholder="Your address Here"
-                        label="Address*"
+                        placeholder={t("yourAddress")}
+                        label={t("address")}
                         name="address"
                         type="text"
                         inputClasses="h-[50px]"
@@ -152,18 +153,17 @@ export default function BecomeSaller() {
                   {/* ============================================================== */}
                   <div className="title w-full mb-4">
                     <h1 className="text-[22px] font-semibold text-qblack mb-1">
-                      Shop Information
+                      {t("shopInfo")}
                     </h1>
                     <p className="text-[15px] text-qgraytwo">
-                      Fill the form below or write us .We will help you as soon
-                      as possible.
+                      {t("fillForm")}
                     </p>
                   </div>
                   <div className="input-area">
                     <div className="mb-5">
                       <InputCom
-                        placeholder="Demo Name"
-                        label="Shop Name*"
+                        placeholder={t("shopName")}
+                        label={t("shopName")}
                         name="shopname"
                         type="text"
                         inputClasses="h-[50px]"
@@ -171,8 +171,8 @@ export default function BecomeSaller() {
                     </div>
                     <div className="mb-5">
                       <InputCom
-                        placeholder="Your address Here"
-                        label="Address*"
+                        placeholder={t("yourAddress")}
+                        label={t("address")}
                         name="shopaddress"
                         type="text"
                         inputClasses="h-[50px]"
@@ -181,7 +181,7 @@ export default function BecomeSaller() {
                     <div className="flex sm:flex-row flex-col space-y-5 sm:space-y-0 sm:space-x-5 mb-[30px]">
                       <InputCom
                         placeholder="● ● ● ● ● ●"
-                        label="Password*"
+                        label={t("password")}
                         name="password"
                         type="password"
                         inputClasses="h-[50px]"
@@ -189,7 +189,7 @@ export default function BecomeSaller() {
 
                       <InputCom
                         placeholder="● ● ● ● ● ●"
-                        label="Re-enter Password*"
+                        label={t("reenterPassword")}
                         name="repassword"
                         type="password"
                         inputClasses="h-[50px]"
@@ -202,16 +202,16 @@ export default function BecomeSaller() {
                           type="button"
                           className="black-btn text-sm text-white w-[490px] h-[50px] font-semibold flex justify-center bg-purple items-center"
                         >
-                          <span>Create Seller Account</span>
+                          <span>{t("createSeller")}</span>
                         </button>
                       </div>
                     </div>
 
                     <div className="signup-area flex justify-center">
                       <p className="text-sm text-qgraytwo font-normal">
-                        Alrady have an Account?
+                        {t("alreadyAccount")}
                         <Link href="/login" className="ml-2 text-qblack">
-                          Log In
+                          {t("logIn")}
                         </Link>
                       </p>
                     </div>
@@ -220,7 +220,7 @@ export default function BecomeSaller() {
                 <div className="flex-1 mb-10 xl:mb-0">
                   <div className="update-profile w-full mb-9">
                     <h1 className="text-xl tracking-wide font-bold text-qblack flex items-center mb-2">
-                      Update Profile
+                      {t("updateProfile")}
                       <span className="ml-1">
                         <svg
                           width="20"
@@ -237,12 +237,7 @@ export default function BecomeSaller() {
                         </svg>
                       </span>
                     </h1>
-                    <p className="text-sm text-qgraytwo mb-5">
-                      Profile of at least Size
-                      <span className="ml-1 text-qblack">300x300</span>. Gifs
-                      work too.
-                      <span className="ml-1 text-qblack">Max 5mb</span>.
-                    </p>
+                    <p className="text-sm text-qgraytwo mb-5">{t("photoHint")}</p>
                     <div className="flex xl:justify-center justify-start">
                       <div className="relative">
                         <img
@@ -284,7 +279,7 @@ export default function BecomeSaller() {
                   </div>
                   <div className="update-logo w-full mb-9">
                     <h1 className="text-xl tracking-wide font-bold text-qblack flex items-center mb-2">
-                      Update Logo
+                      {t("updateLogo")}
                       <span className="ml-1">
                         <svg
                           width="20"
@@ -301,12 +296,7 @@ export default function BecomeSaller() {
                         </svg>
                       </span>
                     </h1>
-                    <p className="text-sm text-qgraytwo mb-5">
-                      Profile of at least Size
-                      <span className="ml-1 text-qblack">300x300</span>. Gifs
-                      work too.
-                      <span className="ml-1 text-qblack">Max 5mb</span>.
-                    </p>
+                    <p className="text-sm text-qgraytwo mb-5">{t("photoHint")}</p>
                     <div className="flex xl:justify-center justify-start">
                       <div className="relative">
                         <img
@@ -346,7 +336,7 @@ export default function BecomeSaller() {
                   </div>
                   <div className="update-cover w-full">
                     <h1 className="text-xl tracking-wide font-bold text-qblack flex items-center mb-2">
-                      Update Cover
+                      {t("updateCover")}
                       <span className="ml-1">
                         <svg
                           width="20"
@@ -363,10 +353,7 @@ export default function BecomeSaller() {
                         </svg>
                       </span>
                     </h1>
-                    <p className="text-sm text-qgraytwo mb-5">
-                      Cover of at least Size
-                      <span className="ml-1 text-qblack">1170x920</span>.
-                    </p>
+                    <p className="text-sm text-qgraytwo mb-5">{t("photoHint")}</p>
                     <div className="flex justify-center">
                       <div className="w-full relative">
                         <img

@@ -1,3 +1,6 @@
+"use client";
+
+import { useLanguage } from "../../i18n/LanguageProvider";
 import blog from "../../data/blogs.json";
 import BlogCard from "../Helpers/Cards/BlogCard";
 import DataIteration from "../Helpers/DataIteration";
@@ -5,12 +8,13 @@ import PageTitle from "../Helpers/PageTitle";
 import Layout from "../Partials/Layout";
 
 export default function Blogs() {
+  const { t } = useLanguage();
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="blogs-wrapper w-full-width">
         <div className="title-bar">
           <PageTitle
-            title="Our Blogs"
+            title={t("ourBlogs")}
             breadcrumb={[
               { name: "home", path: "/" },
               { name: "blogs", path: "/blogs" },
