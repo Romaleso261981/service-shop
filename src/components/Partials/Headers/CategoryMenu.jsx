@@ -97,7 +97,7 @@ function MegaMenu() {
           ))}
         </ul>
       ) : null}
-      <div className="min-w-0 flex-1 overflow-y-auto px-6 py-4">
+      <div className="w-[620px] overflow-y-auto px-6 py-4">
         {parts.length ? (
           <ul className="columns-3 gap-x-8">
             {parts.map((part) => (
