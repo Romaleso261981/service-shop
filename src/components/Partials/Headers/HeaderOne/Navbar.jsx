@@ -16,13 +16,12 @@ export default function Navbar({ className, type }) {
       }  ${className || ""}`}
     >
       <div className="container-x mx-auto h-full">
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative" onMouseLeave={() => setToggle(false)}>
           <div className="w-full h-full flex justify-between items-center">
             <div className="category-and-nav flex xl:space-x-7 space-x-3 items-center">
               <div
                 className="category w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative"
                 onMouseEnter={() => setToggle(true)}
-                onMouseLeave={() => setToggle(false)}
               >
                 <button
                   onClick={() => setToggle(true)}
@@ -56,14 +55,6 @@ export default function Navbar({ className, type }) {
                     />
                   </div>
                 </button>
-                <div
-                  className={`category-dropdown w-[420px] absolute left-0 top-[53px] bg-white shadow-lg ${
-                    categoryToggle ? "overflow-visible" : "overflow-hidden"
-                  }`}
-                  style={{ height: categoryToggle ? "auto" : "0px" }}
-                >
-                  <CategoryMenu type={type} />
-                </div>
               </div>
               <div className="nav">
                 <ul className="nav-wrapper flex xl:space-x-10 space-x-5">
@@ -482,6 +473,11 @@ export default function Navbar({ className, type }) {
               </Link>
             </div>
           </div>
+          {categoryToggle && (
+            <div className="absolute left-0 top-full z-50 w-full pt-0">
+              <CategoryMenu type={type} />
+            </div>
+          )}
         </div>
       </div>
     </div>

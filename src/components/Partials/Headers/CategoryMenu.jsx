@@ -14,6 +14,7 @@ function Chevron() {
       viewBox="0 0 6 9"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
       <rect
         x="1.49805"
@@ -33,126 +34,160 @@ function Chevron() {
   );
 }
 
-function itemClass(type, compact) {
-  const hover =
-    type === 3 ? "hover:bg-qh3-blue hover:text-white" : "hover:bg-qyellow";
-  return `flex justify-between items-center gap-3 px-5 bg-white transition-all duration-300 ease-in-out cursor-pointer text-qblack ${hover} ${
-    compact ? "min-h-9 py-2" : "min-h-10 py-2"
+function rowClass(active) {
+  return `flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-xs leading-4 text-qblack ${
+    active ? "bg-[#f3f3f5]" : "hover:bg-[#f7f7f8]"
   }`;
 }
 
-function Leaf({ name, type, compact, icon = false }) {
-  const { category } = useLanguage();
+function MegaMenu() {
+  const { category: label } = useLanguage();
+  const initial = categories.find((item) => item.children?.length) || categories[0];
+  const initialChild =
+    initial.children?.find((item) => item.children?.length) || initial.children?.[0];
+  const [activeName, setActiveName] = useState(initial.name);
+  const [activeChildName, setActiveChildName] = useState(initialChild?.name || "");
+  const active = categories.find((item) => item.name === activeName) || initial;
+  const activeChild = active.children?.find((item) => item.name === activeChildName);
+  const parts = activeChild?.children || [];
+
+  function chooseCategory(item) {
+    setActiveName(item.name);
+    const nextChild = item.children?.find((child) => child.children?.length) || item.children?.[0];
+    setActiveChildName(nextChild?.name || "");
+  }
+
   return (
-    <Link href="/all-products">
-      <div className={itemClass(type, compact)}>
-        <span className="flex min-w-0 items-center gap-2.5">
-          {icon && <CategoryIcon name={name} />}
-          <span className="text-xs font-400 leading-4">{category(name)}</span>
-        </span>
+    <div className="flex max-h-[75vh] overflow-hidden rounded-b-md bg-white shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
+      <ul className="w-[270px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
+        {categories.map((item) => (
+          <li key={item.name}>
+            {item.children?.length ? (
+              <button type="button" className={rowClass(item.name === active.name)} onMouseEnter={() => chooseCategory(item)}>
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <CategoryIcon name={item.name} />
+                  <span>{label(item.name)}</span>
+                </span>
+                <Chevron />
+              </button>
+            ) : (
+              <Link href="/all-products" className={rowClass(item.name === active.name)} onMouseEnter={() => chooseCategory(item)}>
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <CategoryIcon name={item.name} />
+                  <span>{label(item.name)}</span>
+                </span>
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+      {active.children?.length ? (
+        <ul className="w-[250px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
+          {active.children.map((child) => (
+            <li key={child.name}>
+              <button
+                type="button"
+                className={rowClass(child.name === activeChildName)}
+                onMouseEnter={() => setActiveChildName(child.name)}
+              >
+                <span>{label(child.name)}</span>
+                {child.children?.length ? <Chevron /> : null}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <div className="min-w-0 flex-1 overflow-y-auto px-6 py-4">
+        {parts.length ? (
+          <ul className="columns-3 gap-x-8">
+            {parts.map((part) => (
+              <li key={part} className="mb-2 break-inside-avoid">
+                <Link href="/all-products" className="text-xs leading-5 text-qblack hover:text-qred">
+                  {label(part)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
-    </Link>
+    </div>
   );
 }
 
-export default function CategoryMenu({ type, variant = "desktop" }) {
-  const compact = variant === "mobile";
+function MobileMenu({ type }) {
   const { category: label } = useLanguage();
   const [openCategory, setOpenCategory] = useState(null);
   const [openChild, setOpenChild] = useState(null);
+  const hover = type === 3 ? "hover:bg-qh3-blue hover:text-white" : "hover:bg-qyellow";
 
   return (
     <ul className="categories-list">
-      {categories.map((category) => {
-        const categoryOpen = compact && openCategory === category.name;
+      {categories.map((item) => {
+        const categoryOpen = openCategory === item.name;
         return (
-          <li key={category.name} className="category-item group/cat relative">
-            {category.children ? (
-              <div
-                className={itemClass(type, compact)}
-                onClick={
-                  compact
-                    ? () =>
-                        setOpenCategory((current) =>
-                          current === category.name ? null : category.name
-                        )
-                    : undefined
-                }
+          <li key={item.name}>
+            {item.children?.length ? (
+              <button
+                type="button"
+                className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white px-5 py-2 text-left text-xs text-qblack ${hover}`}
+                onClick={() => setOpenCategory((current) => (current === item.name ? null : item.name))}
               >
                 <span className="flex min-w-0 items-center gap-2.5">
-                  <CategoryIcon name={category.name} />
-                  <span className="text-xs font-400 leading-4">
-                    {label(category.name)}
-                  </span>
+                  <CategoryIcon name={item.name} />
+                  {label(item.name)}
                 </span>
                 <Chevron />
-              </div>
+              </button>
             ) : (
-              <Leaf name={category.name} type={type} compact={compact} icon />
+              <Link href="/all-products" className={`flex min-h-9 items-center gap-2.5 bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                <CategoryIcon name={item.name} />
+                {label(item.name)}
+              </Link>
             )}
-            {category.children && (
-              <div
-                className={`z-40 bg-white shadow-lg ${
-                  compact
-                    ? categoryOpen
-                      ? "block"
-                      : "hidden"
-                    : "absolute left-full top-0 hidden w-[340px] group-hover/cat:block"
-                }`}
-              >
-                <ul className={compact ? "" : "max-h-[70vh] overflow-y-auto"}>
-                  {category.children.map((child) => {
-                    const childOpen = compact && openChild === child.name;
-                    return (
-                      <li key={child.name} className="group/sub relative">
-                        {child.children ? (
-                          <div
-                            className={itemClass(type, true)}
-                            onClick={
-                              compact
-                                ? () =>
-                                    setOpenChild((current) =>
-                                      current === child.name ? null : child.name
-                                    )
-                                : undefined
-                            }
-                          >
-                            <span className="text-xs font-400 leading-4">
-                              {label(child.name)}
-                            </span>
-                            <Chevron />
-                          </div>
-                        ) : (
-                          <Leaf name={child.name} type={type} compact />
-                        )}
-                        {child.children && (
-                          <div
-                            className={`z-50 bg-white shadow-lg ${
-                              compact
-                                ? childOpen
-                                  ? "block"
-                                  : "hidden"
-                                : "absolute left-full top-0 hidden w-[320px] group-hover/sub:block"
-                            }`}
-                          >
-                            <ul className="max-h-[70vh] overflow-y-auto">
-                              {child.children.map((part) => (
-                                <li key={part}>
-                                  <Leaf name={part} type={type} compact />
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+            {item.children && categoryOpen && (
+              <ul>
+                {item.children.map((child) => {
+                  const childOpen = openChild === child.name;
+                  return (
+                    <li key={child.name}>
+                      {child.children?.length ? (
+                        <button
+                          type="button"
+                          className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white px-5 py-2 text-left text-xs text-qblack ${hover}`}
+                          onClick={() => setOpenChild((current) => (current === child.name ? null : child.name))}
+                        >
+                          <span>{label(child.name)}</span>
+                          <Chevron />
+                        </button>
+                      ) : (
+                        <Link href="/all-products" className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                          {label(child.name)}
+                        </Link>
+                      )}
+                      {child.children && childOpen && (
+                        <ul>
+                          {child.children.map((part) => (
+                            <li key={part}>
+                              <Link href="/all-products" className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                                {label(part)}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
             )}
           </li>
         );
       })}
     </ul>
   );
+}
+
+export default function CategoryMenu({ type, variant = "desktop" }) {
+  if (variant === "mobile") return <MobileMenu type={type} />;
+  return <MegaMenu />;
 }
