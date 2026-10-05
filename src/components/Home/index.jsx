@@ -1,3 +1,4 @@
+import { bannerSlot } from "../../lib/bannerRotate";
 import { variantPath } from "../../lib/imageSizes";
 import SectionStyleFour from "../Helpers/SectionStyleFour";
 import SectionStyleOne from "../Helpers/SectionStyleOne";
@@ -42,7 +43,11 @@ export default function Home({ products = [] }) {
       <Layout>
         {/* {ads && <Ads handler={adsHandle} />} */}
         <div className="btn w-5 h-5 "></div>
-        <Banner className="banner-wrapper mb-[60px]" products={shots} />
+        <Banner
+          className="banner-wrapper mb-[60px]"
+          products={shots}
+          initialOffset={bannerSlot()}
+        />
         <SectionStyleOne
           products={products}
           brands={brands}

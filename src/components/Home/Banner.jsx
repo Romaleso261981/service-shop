@@ -1,16 +1,45 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useLanguage } from "../../i18n/LanguageProvider";
+import { BANNER_ROTATE_MS } from "../../lib/bannerRotate";
 import { variantPath } from "../../lib/imageSizes";
+
+const homeBanners = [
+  { src: "/assets/images/banner-washers.jpg", alt: "Запчастини для пральних машин" },
+  { src: "/assets/images/banner-vacuums.jpg", alt: "Запчастини для пилососів" },
+  { src: "/assets/images/banner-conditioners.jpg", alt: "Запчастини для кондиціонера" },
+  { src: "/assets/images/banner-boilers.jpg", alt: "Запчастини для бойлера" },
+  { src: "/assets/images/banner-microwaves.jpg", alt: "Запчастини для мікрохвильовки" },
+  { src: "/assets/images/banner-fridges.jpg", alt: "Запчастини для холодильника" },
+];
 
 function pick(products, index) {
   if (!products.length) return null;
-  return products[index % products.length];
+  return products[((index % products.length) + products.length) % products.length];
 }
 
-export default function Banner({ className, products = [] }) {
+export default function Banner({ className, products = [], initialOffset = 0 }) {
   const { t, itemTitle } = useLanguage();
-  const main = pick(products, 0);
+  const [index, setIndex] = useState(
+    ((initialOffset % homeBanners.length) + homeBanners.length) % homeBanners.length
+  );
+
+  useEffect(() => {
+    if (homeBanners.length < 2) return undefined;
+    let intervalId;
+    const advance = () => setIndex((current) => (current + 1) % homeBanners.length);
+    const timeoutId = window.setTimeout(() => {
+      advance();
+      intervalId = window.setInterval(advance, BANNER_ROTATE_MS);
+    }, BANNER_ROTATE_MS - (Date.now() % BANNER_ROTATE_MS));
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
+  const slide = homeBanners[index];
   const top = pick(products, 1);
   const bottom = pick(products, 2);
   return (
@@ -18,35 +47,39 @@ export default function Banner({ className, products = [] }) {
       <div className={`w-full ${className || ""}`}>
         <div className="container-x mx-auto">
           <div className="main-wrapper w-full">
-            <div className="banner-card xl:flex xl:space-x-[30px] xl:h-[600px]  mb-[30px]">
-              <div data-aos="fade-right" className="xl:w-[740px] w-full h-full">
-                <Link href={main ? `/product/${main.id}` : "/all-products"}>
-                  <picture>
-                    <source
-                      media="(min-width:1025px)"
-                      srcSet={
-                        main
-                          ? variantPath(main.image, 740, 600)
-                          : "/assets/images/banner-1.png"
-                      }
-                    />
-                    <img
-                      src={
-                        main
-                          ? variantPath(main.image, 740, 400)
-                          : "/assets/images/banner-1.2.png"
-                      }
-                      alt={main ? itemTitle(main) : ""}
-                      className="w-full max-w-full h-auto object-contain bg-white"
-                    />
-                  </picture>
+            <div className="banner-card xl:flex xl:items-start xl:space-x-[30px] mb-[30px]">
+              <div
+                data-aos="fade-right"
+                data-banner-slot={index}
+                className="relative w-full shrink-0 self-start xl:w-[740px]"
+              >
+                <Link href="/all-products">
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    className="block h-auto w-full"
+                  />
                 </Link>
+                <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2">
+                  {homeBanners.map((banner, dot) => (
+                    <button
+                      key={banner.src}
+                      type="button"
+                      aria-label={banner.alt}
+                      aria-current={dot === index ? "true" : undefined}
+                      onClick={() => setIndex(dot)}
+                      className={`h-2.5 w-2.5 rounded-full bg-black ${
+                        dot === index ? "opacity-100" : "opacity-45"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
               <div
                 data-aos="fade-left"
-                className="flex-1 flex xl:flex-col flex-row  xl:space-y-[30px] h-full"
+                className="flex flex-1 flex-row xl:flex-col xl:space-y-[30px]"
               >
-                <div className="w-full xl:h-1/2">
+                <div className="h-[220px] w-full xl:h-[197px]">
                   <Link href={top ? `/product/${top.id}` : "/all-products"}>
                     <img
                       src={
@@ -59,7 +92,7 @@ export default function Banner({ className, products = [] }) {
                     />
                   </Link>
                 </div>
-                <div className="w-full xl:h-1/2">
+                <div className="h-[220px] w-full xl:h-[197px]">
                   <Link href={bottom ? `/product/${bottom.id}` : "/all-products"}>
                     <img
                       src={
