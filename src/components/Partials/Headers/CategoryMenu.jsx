@@ -3,7 +3,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { categories } from "../../../data/categories";
 import { useLanguage } from "../../../i18n/LanguageProvider";
+import { categorySlug } from "../../../lib/categorySlug";
 import CategoryIcon from "./CategoryIcon";
+
+function catalogHref(name) {
+  return `/catalog/${categorySlug(name)}`;
+}
+
+function partName(part) {
+  return typeof part === "string" ? part : part.name;
+}
 
 function Chevron() {
   return (
@@ -62,22 +71,17 @@ function MegaMenu() {
       <ul className="w-[270px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
         {categories.map((item) => (
           <li key={item.name}>
-            {item.children?.length ? (
-              <button type="button" className={rowClass(item.name === active.name)} onMouseEnter={() => chooseCategory(item)}>
-                <span className="flex min-w-0 items-center gap-2.5">
-                  <CategoryIcon name={item.name} />
-                  <span>{label(item.name)}</span>
-                </span>
-                <Chevron />
-              </button>
-            ) : (
-              <Link href="/all-products" className={rowClass(item.name === active.name)} onMouseEnter={() => chooseCategory(item)}>
-                <span className="flex min-w-0 items-center gap-2.5">
-                  <CategoryIcon name={item.name} />
-                  <span>{label(item.name)}</span>
-                </span>
-              </Link>
-            )}
+            <Link
+              href={catalogHref(item.name)}
+              className={rowClass(item.name === active.name)}
+              onMouseEnter={() => chooseCategory(item)}
+            >
+              <span className="flex min-w-0 items-center gap-2.5">
+                <CategoryIcon name={item.name} />
+                <span>{label(item.name)}</span>
+              </span>
+              {item.children?.length ? <Chevron /> : null}
+            </Link>
           </li>
         ))}
       </ul>
@@ -85,14 +89,14 @@ function MegaMenu() {
         <ul className="w-[250px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
           {active.children.map((child) => (
             <li key={child.name}>
-              <button
-                type="button"
+              <Link
+                href={catalogHref(child.name)}
                 className={rowClass(child.name === activeChildName)}
                 onMouseEnter={() => setActiveChildName(child.name)}
               >
                 <span>{label(child.name)}</span>
                 {child.children?.length ? <Chevron /> : null}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
@@ -100,13 +104,16 @@ function MegaMenu() {
       <div className="w-[620px] overflow-y-auto px-6 py-4">
         {parts.length ? (
           <ul className="columns-3 gap-x-8">
-            {parts.map((part) => (
-              <li key={part} className="mb-2 break-inside-avoid">
-                <Link href="/all-products" className="text-xs leading-5 text-qblack hover:text-qred">
-                  {label(part)}
-                </Link>
-              </li>
-            ))}
+            {parts.map((part) => {
+              const name = partName(part);
+              return (
+                <li key={name} className="mb-2 break-inside-avoid">
+                  <Link href={catalogHref(name)} className="text-xs leading-5 text-qblack hover:text-qred">
+                    {label(name)}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         ) : null}
       </div>
@@ -127,19 +134,22 @@ function MobileMenu({ type }) {
         return (
           <li key={item.name}>
             {item.children?.length ? (
-              <button
-                type="button"
-                className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white px-5 py-2 text-left text-xs text-qblack ${hover}`}
-                onClick={() => setOpenCategory((current) => (current === item.name ? null : item.name))}
-              >
-                <span className="flex min-w-0 items-center gap-2.5">
+              <div className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white text-left text-xs text-qblack ${hover}`}>
+                <Link href={catalogHref(item.name)} className="flex min-w-0 flex-1 items-center gap-2.5 px-5 py-2">
                   <CategoryIcon name={item.name} />
                   {label(item.name)}
-                </span>
-                <Chevron />
-              </button>
+                </Link>
+                <button
+                  type="button"
+                  className="px-4 py-2"
+                  aria-expanded={categoryOpen}
+                  onClick={() => setOpenCategory((current) => (current === item.name ? null : item.name))}
+                >
+                  <Chevron />
+                </button>
+              </div>
             ) : (
-              <Link href="/all-products" className={`flex min-h-9 items-center gap-2.5 bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+              <Link href={catalogHref(item.name)} className={`flex min-h-9 items-center gap-2.5 bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
                 <CategoryIcon name={item.name} />
                 {label(item.name)}
               </Link>
@@ -151,28 +161,36 @@ function MobileMenu({ type }) {
                   return (
                     <li key={child.name}>
                       {child.children?.length ? (
-                        <button
-                          type="button"
-                          className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white px-5 py-2 text-left text-xs text-qblack ${hover}`}
-                          onClick={() => setOpenChild((current) => (current === child.name ? null : child.name))}
-                        >
-                          <span>{label(child.name)}</span>
-                          <Chevron />
-                        </button>
+                        <div className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white text-left text-xs text-qblack ${hover}`}>
+                          <Link href={catalogHref(child.name)} className="min-w-0 flex-1 px-5 py-2">
+                            {label(child.name)}
+                          </Link>
+                          <button
+                            type="button"
+                            className="px-4 py-2"
+                            aria-expanded={childOpen}
+                            onClick={() => setOpenChild((current) => (current === child.name ? null : child.name))}
+                          >
+                            <Chevron />
+                          </button>
+                        </div>
                       ) : (
-                        <Link href="/all-products" className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                        <Link href={catalogHref(child.name)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
                           {label(child.name)}
                         </Link>
                       )}
                       {child.children && childOpen && (
                         <ul>
-                          {child.children.map((part) => (
-                            <li key={part}>
-                              <Link href="/all-products" className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
-                                {label(part)}
-                              </Link>
-                            </li>
-                          ))}
+                          {child.children.map((part) => {
+                            const name = partName(part);
+                            return (
+                              <li key={name}>
+                                <Link href={catalogHref(name)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                                  {label(name)}
+                                </Link>
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                     </li>
