@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
-import { productInput } from "@/lib/productInput";
-import { deleteProduct, saveProduct } from "@/lib/store";
+import { deleteCategory, updateCategory } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -10,18 +9,16 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
   const body = await request.json().catch(() => ({}));
-  const parsed = productInput(body);
-  if (parsed.error) return NextResponse.json({ error: parsed.error }, { status: 400 });
-  const result = await saveProduct(parsed.input, params.id);
+  const result = await updateCategory(params.id, body.name);
   if (result.error) return NextResponse.json({ error: result.error }, { status: 400 });
-  return NextResponse.json({ product: result.product });
+  return NextResponse.json(result);
 }
 
 export async function DELETE(request, { params }) {
   if (!(await isAdminRequest(request))) {
     return NextResponse.json({ error: "Потрібен вхід" }, { status: 401 });
   }
-  const deleted = await deleteProduct(params.id);
-  if (!deleted) return NextResponse.json({ error: "Товар не знайдено" }, { status: 404 });
-  return NextResponse.json({ ok: true });
+  const result = await deleteCategory(params.id);
+  if (result.error) return NextResponse.json({ error: result.error }, { status: 400 });
+  return NextResponse.json(result);
 }

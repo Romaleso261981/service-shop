@@ -5,19 +5,19 @@ export default function SearchBox({ className, type }) {
   const { t } = useLanguage();
   return (
     <>
-      <div
+      <form
+        action="/all-products"
         className={`w-full h-full flex items-center  border border-qgray-border bg-white ${
           className || ""
         }`}
       >
         <div className="flex-1 bg-red-500 h-full">
-          <form action="#" className="h-full">
-            <input
-              type="text"
-              className="search-input"
-              placeholder={t("searchProduct")}
-            />
-          </form>
+          <input
+            type="search"
+            name="q"
+            className="search-input"
+            placeholder={t("searchProduct")}
+          />
         </div>
         <div className="w-[1px] h-[22px] bg-qgray-border"></div>
         <div className="flex-1 flex items-center px-4">
@@ -64,11 +64,11 @@ export default function SearchBox({ className, type }) {
               ? "bg-qblack text-white"
               : "search-btn"
           }`}
-          type="button"
+          type="submit"
         >
           {t("search")}
         </button>
-      </div>
+      </form>
     </>
   );
 }

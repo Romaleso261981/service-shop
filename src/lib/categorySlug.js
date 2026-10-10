@@ -78,6 +78,21 @@ function nodeChildren(entry) {
   return entry.children;
 }
 
+export function categoryNodes(nodes = categories, parentPath = "") {
+  return nodes.map((entry, index) => {
+    const name = nodeName(entry);
+    const slug = categorySlug(name);
+    const path = parentPath ? `${parentPath}/${slug}` : slug;
+    return {
+      name,
+      slug,
+      path,
+      sort: index,
+      children: categoryNodes(nodeChildren(entry), path),
+    };
+  });
+}
+
 export function findCategoryBySlug(slug) {
   let best = null;
 

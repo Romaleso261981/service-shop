@@ -28,6 +28,16 @@ export default function ProductFacts({ datas }) {
       {stock ? (
         <p className={datas.stock === "out" ? "text-qred" : "text-[#1a7f37]"}>{stock}</p>
       ) : null}
+      {Number.isInteger(datas.stock_qty) ? (
+        <p>
+          {t("stockQty")}: {datas.stock_qty}
+        </p>
+      ) : null}
+      {datas.lead_time ? (
+        <p>
+          {t("leadTime")}: {datas.lead_time}
+        </p>
+      ) : null}
     </div>
   );
 }

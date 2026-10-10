@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Layout from "../Partials/Layout";
-import BreadcrumbCom from "../BreadcrumbCom";
 import { useLanguage } from "../../i18n/LanguageProvider";
 import { stockText } from "../Helpers/ProductFacts";
 
 export default function ProductPage({ product }) {
-  const { t, itemTitle } = useLanguage();
+  const { t, itemTitle, category } = useLanguage();
+  const photos = product.images?.length ? product.images : product.image ? [product.image] : [];
+  const [photo, setPhoto] = useState(photos[0] || "");
   const [modelQuery, setModelQuery] = useState("");
   const models = useMemo(
     () =>
@@ -25,19 +26,40 @@ export default function ProductPage({ product }) {
   return (
     <Layout>
       <div className="container-x mx-auto pb-16">
-        <BreadcrumbCom
-          paths={[
-            { name: "home", path: "/" },
-            { name: "single product", path: `/product/${product.id}` },
-          ]}
-        />
+        <nav className="mb-3 text-[13px] leading-5 text-qgray" aria-label="Breadcrumb">
+          <a href="/" className="hover:text-qblack">
+            {t("home")}
+          </a>
+          {(product.category_chain || []).map((crumb) => (
+            <span key={crumb.path}>
+              <span className="mx-1.5">/</span>
+              <a href={`/catalog/${crumb.path}`} className="hover:text-qblack">
+                {category(crumb.name)}
+              </a>
+            </span>
+          ))}
+        </nav>
         <div className="bg-white p-6 lg:p-10 grid lg:grid-cols-2 gap-10">
-          <div className="bg-[#f7f7f7] flex items-center justify-center min-h-[360px]">
-            <img
-              src={`/assets/images/${product.image}`}
-              alt=""
-              className="max-h-[420px] w-full object-contain"
-            />
+          <div>
+            <div className="bg-[#f7f7f7] flex items-center justify-center min-h-[360px]">
+              {photo ? (
+                <img src={`/assets/images/${photo}`} alt="" className="max-h-[420px] w-full object-contain" />
+              ) : null}
+            </div>
+            {photos.length > 1 ? (
+              <div className="mt-3 flex gap-2 flex-wrap">
+                {photos.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setPhoto(item)}
+                    className={`h-[88px] w-[88px] border bg-white p-2 ${item === photo ? "border-qred" : "border-qgray-border"}`}
+                  >
+                    <img src={`/assets/images/${item}`} alt="" className="h-full w-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </div>
           <div>
             <h1 className="text-2xl font-600 leading-8 mb-4">{itemTitle(product)}</h1>
@@ -72,6 +94,16 @@ export default function ProductPage({ product }) {
                   {t("warranty")}: {product.warranty}
                 </p>
               )}
+              {Number.isInteger(product.stock_qty) ? (
+                <p>
+                  {t("stockQty")}: {product.stock_qty}
+                </p>
+              ) : null}
+              {product.lead_time ? (
+                <p>
+                  {t("leadTime")}: {product.lead_time}
+                </p>
+              ) : null}
             </div>
             <div className="flex items-end gap-3 mb-6">
               {product.price && product.price !== product.offer_price && (

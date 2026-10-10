@@ -1,410 +1,53 @@
 "use client";
-import RangeSlider from "react-range-slider-input";
-import Checkbox from "../Helpers/Checkbox";
+
 import { useLanguage } from "../../i18n/LanguageProvider";
 import CatalogFilter from "./CatalogFilter";
 
-export default function ProductsFilter({
-  filters,
-  checkboxHandler,
-  volume,
-  volumeHandler,
-  storage,
-  filterstorage,
-  className,
-  filterToggle,
-  filterToggleHandler,
-}) {
+const inputClass = "h-10 w-full border border-qgray-border px-3 text-xs outline-none focus:border-qyellow";
+
+export default function ProductsFilter({ brands = [], query = {} }) {
   const { t } = useLanguage();
   return (
-    <>
-      <div
-        className={`filter-widget w-full fixed lg:relative left-0 top-0 h-screen z-10 lg:h-auto overflow-y-scroll lg:overflow-y-auto bg-white px-[30px] pt-[40px] ${
-          className || ""
-        }  ${filterToggle ? "block" : "hidden lg:block"}`}
-      >
-        <div className="filter-subject-item pb-10 border-b border-qgray-border">
-          <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">
-              {t("productCategories")}
-            </h1>
-          </div>
-          <div className="filter-items">
-            <CatalogFilter />
-          </div>
-        </div>
-        <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
-          <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">{t("priceRange")}</h1>
-          </div>
-          <div className="price-range mb-5">
-            <RangeSlider
-              value={volume}
-              onInput={volumeHandler}
-              min={10}
-              max={1000}
-            />
-          </div>
-          <p className="text-xs text-qblack font-400">
-            Price: ${volume.min} - ${volume.max}
-          </p>
-        </div>
-        <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
-          <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">{t("brands")}</h1>
-          </div>
-          <div className="filter-items">
-            <ul>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="apple"
-                      name="apple"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.apple}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="apple"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      apple
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="samsung"
-                      name="samsung"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.samsung}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="samsung"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      Samsung
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="walton"
-                      name="walton"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.walton}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="walton"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      walton
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="oneplus"
-                      name="oneplus"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.oneplus}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="oneplus"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      oneplus
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="vivo"
-                      name="vivo"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.vivo}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="vivo"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      vivo
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="oppo"
-                      name="oppo"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.oppo}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="oppo"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      oppo
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="xiomi"
-                      name="xiomi"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.xiomi}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="xiomi"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      xiomi
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="others"
-                      name="others"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.others}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="others"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      {t("others")}
-                    </label>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="filter-subject-item pb-10 border-b border-qgray-border mt-10">
-          <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">{t("storage")}</h1>
-          </div>
-          <div className="filter-items">
-            <div className="flex space-x-[5px] flex-wrap">
-              <span
-                onClick={() => filterstorage("64GB")}
-                className={` font-400 border border-qgray-border text-xs px-[14px] py-[6px] cursor-pointer mb-[5px] ${
-                  storage === "64GB"
-                    ? "bg-qyellow text-qblack border-none"
-                    : " text-qgray "
-                }`}
-              >
-                64GB
-              </span>
-              <span
-                onClick={() => filterstorage("128GB")}
-                className={` font-400 border border-qgray-border text-xs px-[14px] py-[6px] cursor-pointer mb-[5px] ${
-                  storage === "128GB"
-                    ? "bg-qyellow text-qblack border-none"
-                    : " text-qgray "
-                }`}
-              >
-                128GB
-              </span>
-              <span
-                onClick={() => filterstorage("256GB")}
-                className={` font-400 border border-qgray-border text-xs px-[14px] py-[6px] cursor-pointer mb-[5px] ${
-                  storage === "256GB"
-                    ? "bg-qyellow text-qblack border-none"
-                    : " text-qgray "
-                }`}
-              >
-                256GB
-              </span>
-              <span
-                onClick={() => filterstorage("512GB")}
-                className={` font-400 border border-qgray-border text-xs px-[14px] py-[6px] cursor-pointer mb-[5px] ${
-                  storage === "512GB"
-                    ? "bg-qyellow text-qblack border-none"
-                    : " text-qgray "
-                }`}
-              >
-                512GB
-              </span>
-              <span
-                onClick={() => filterstorage("1024GB")}
-                className={` font-400 border border-qgray-border text-xs px-[14px] py-[6px] cursor-pointer mb-[5px] ${
-                  storage === "1024GB"
-                    ? "bg-qyellow text-qblack border-none"
-                    : " text-qgray "
-                }`}
-              >
-                1024GB
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="filter-subject-item pb-10 mt-10">
-          <div className="subject-title mb-[30px]">
-            <h1 className="text-black text-base font-500">{t("sizes")}</h1>
-          </div>
-          <div className="filter-items">
-            <ul>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="sizeS"
-                      name="sizeS"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.sizeS}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="sizeS"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      s
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="sizeM"
-                      name="sizeM"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.sizeM}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="sizeM"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      M
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="sizeXL"
-                      name="sizeXL"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.sizeXL}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="sizeXL"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      XL
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="sizeXXL"
-                      name="sizeXXL"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.sizeXXL}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="sizeXXL"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      XXL
-                    </label>
-                  </div>
-                </div>
-              </li>
-              <li className="item flex justify-between items-center mb-5">
-                <div className="flex space-x-[14px] items-center">
-                  <div>
-                    <Checkbox
-                      id="sizeFit"
-                      name="sizeFit"
-                      handleChange={(e) => checkboxHandler(e)}
-                      checked={filters.sizeFit}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="sizeFit"
-                      className="text-xs font-black font-400 capitalize"
-                    >
-                      {t("slimFit")}
-                    </label>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <button
-          onClick={filterToggleHandler}
-          type="button"
-          className="w-10 h-10 fixed top-5 right-5 z-50 rounded  lg:hidden flex justify-center items-center border border-qred text-qred"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+    <form action="/all-products" className="filter-widget mb-[30px] bg-white px-[30px] pt-[40px] pb-10">
+      {query.category ? <input type="hidden" name="category" value={query.category} /> : null}
+      <div className="filter-subject-item pb-10 border-b border-qgray-border">
+        <h2 className="mb-[30px] text-base font-500 text-black">{t("productCategories")}</h2>
+        <CatalogFilter />
       </div>
-    </>
+      <div className="filter-subject-item mt-10 border-b border-qgray-border pb-10">
+        <h2 className="mb-4 text-base font-500 text-black">{t("search")}</h2>
+        <input name="q" defaultValue={query.q || ""} placeholder={t("searchProduct")} className={inputClass} />
+      </div>
+      <div className="filter-subject-item mt-10 border-b border-qgray-border pb-10">
+        <h2 className="mb-4 text-base font-500 text-black">{t("priceRange")}</h2>
+        <div className="grid grid-cols-2 gap-2">
+          <input name="min" defaultValue={query.min || ""} placeholder="₴" className={inputClass} />
+          <input name="max" defaultValue={query.max || ""} placeholder="₴" className={inputClass} />
+        </div>
+      </div>
+      <div className="filter-subject-item mt-10 border-b border-qgray-border pb-10">
+        <h2 className="mb-4 text-base font-500 text-black">{t("brands")}</h2>
+        <select name="brand" defaultValue={query.brand || ""} className={inputClass}>
+          <option value="">{t("allCategories")}</option>
+          {brands.map((item) => (
+            <option key={item.brand} value={item.brand}>
+              {item.brand} ({item.total})
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="filter-subject-item mt-10 pb-6">
+        <h2 className="mb-4 text-base font-500 text-black">{t("inStock")}</h2>
+        <select name="stock" defaultValue={query.stock || ""} className={inputClass}>
+          <option value="">{t("allCategories")}</option>
+          <option value="in">{t("inStock")}</option>
+          <option value="order">{t("onOrder")}</option>
+          <option value="out">{t("outOfStock")}</option>
+        </select>
+      </div>
+      <button type="submit" className="h-11 w-full bg-qyellow text-sm font-600">
+        {t("search")}
+      </button>
+    </form>
   );
 }

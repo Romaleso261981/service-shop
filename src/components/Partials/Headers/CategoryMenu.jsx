@@ -1,13 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { categories } from "../../../data/categories";
 import { useLanguage } from "../../../i18n/LanguageProvider";
-import { categorySlug } from "../../../lib/categorySlug";
+import { categoryNodes } from "../../../lib/categorySlug";
 import CategoryIcon from "./CategoryIcon";
 
-function catalogHref(name) {
-  return `/catalog/${categorySlug(name)}`;
+function catalogHref(node) {
+  return node?.path ? `/catalog/${node.path}` : "/all-products";
 }
 
 function partName(part) {
@@ -49,14 +48,14 @@ function rowClass(active) {
   }`;
 }
 
-function MegaMenu() {
+function MegaMenu({ tree }) {
   const { category: label } = useLanguage();
-  const initial = categories.find((item) => item.children?.length) || categories[0];
+  const initial = tree.find((item) => item.children?.length) || tree[0];
   const initialChild =
     initial.children?.find((item) => item.children?.length) || initial.children?.[0];
   const [activeName, setActiveName] = useState(initial.name);
   const [activeChildName, setActiveChildName] = useState(initialChild?.name || "");
-  const active = categories.find((item) => item.name === activeName) || initial;
+  const active = tree.find((item) => item.name === activeName) || initial;
   const activeChild = active.children?.find((item) => item.name === activeChildName);
   const parts = activeChild?.children || [];
 
@@ -69,10 +68,10 @@ function MegaMenu() {
   return (
     <div className="flex max-h-[75vh] overflow-hidden rounded-b-md bg-white shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
       <ul className="w-[270px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
-        {categories.map((item) => (
-          <li key={item.name}>
+        {tree.map((item) => (
+          <li key={item.path || item.name}>
             <Link
-              href={catalogHref(item.name)}
+              href={catalogHref(item)}
               className={rowClass(item.name === active.name)}
               onMouseEnter={() => chooseCategory(item)}
             >
@@ -88,9 +87,9 @@ function MegaMenu() {
       {active.children?.length ? (
         <ul className="w-[250px] shrink-0 overflow-y-auto border-r border-[#efefef] py-2">
           {active.children.map((child) => (
-            <li key={child.name}>
+            <li key={child.path || child.name}>
               <Link
-                href={catalogHref(child.name)}
+                href={catalogHref(child)}
                 className={rowClass(child.name === activeChildName)}
                 onMouseEnter={() => setActiveChildName(child.name)}
               >
@@ -107,8 +106,8 @@ function MegaMenu() {
             {parts.map((part) => {
               const name = partName(part);
               return (
-                <li key={name} className="mb-2 break-inside-avoid">
-                  <Link href={catalogHref(name)} className="text-xs leading-5 text-qblack hover:text-qred">
+                <li key={part.path || name} className="mb-2 break-inside-avoid">
+                  <Link href={catalogHref(part)} className="text-xs leading-5 text-qblack hover:text-qred">
                     {label(name)}
                   </Link>
                 </li>
@@ -121,7 +120,7 @@ function MegaMenu() {
   );
 }
 
-function MobileMenu({ type }) {
+function MobileMenu({ type, tree }) {
   const { category: label } = useLanguage();
   const [openCategory, setOpenCategory] = useState(null);
   const [openChild, setOpenChild] = useState(null);
@@ -129,13 +128,13 @@ function MobileMenu({ type }) {
 
   return (
     <ul className="categories-list">
-      {categories.map((item) => {
+      {tree.map((item) => {
         const categoryOpen = openCategory === item.name;
         return (
-          <li key={item.name}>
+          <li key={item.path || item.name}>
             {item.children?.length ? (
               <div className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white text-left text-xs text-qblack ${hover}`}>
-                <Link href={catalogHref(item.name)} className="flex min-w-0 flex-1 items-center gap-2.5 px-5 py-2">
+                <Link href={catalogHref(item)} className="flex min-w-0 flex-1 items-center gap-2.5 px-5 py-2">
                   <CategoryIcon name={item.name} />
                   {label(item.name)}
                 </Link>
@@ -149,7 +148,7 @@ function MobileMenu({ type }) {
                 </button>
               </div>
             ) : (
-              <Link href={catalogHref(item.name)} className={`flex min-h-9 items-center gap-2.5 bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+              <Link href={catalogHref(item)} className={`flex min-h-9 items-center gap-2.5 bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
                 <CategoryIcon name={item.name} />
                 {label(item.name)}
               </Link>
@@ -159,10 +158,10 @@ function MobileMenu({ type }) {
                 {item.children.map((child) => {
                   const childOpen = openChild === child.name;
                   return (
-                    <li key={child.name}>
+                    <li key={child.path || child.name}>
                       {child.children?.length ? (
                         <div className={`flex min-h-9 w-full items-center justify-between gap-3 bg-white text-left text-xs text-qblack ${hover}`}>
-                          <Link href={catalogHref(child.name)} className="min-w-0 flex-1 px-5 py-2">
+                          <Link href={catalogHref(child)} className="min-w-0 flex-1 px-5 py-2">
                             {label(child.name)}
                           </Link>
                           <button
@@ -175,7 +174,7 @@ function MobileMenu({ type }) {
                           </button>
                         </div>
                       ) : (
-                        <Link href={catalogHref(child.name)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                        <Link href={catalogHref(child)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
                           {label(child.name)}
                         </Link>
                       )}
@@ -184,8 +183,8 @@ function MobileMenu({ type }) {
                           {child.children.map((part) => {
                             const name = partName(part);
                             return (
-                              <li key={name}>
-                                <Link href={catalogHref(name)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
+                              <li key={part.path || name}>
+                                <Link href={catalogHref(part)} className={`block bg-white px-5 py-2 text-xs text-qblack ${hover}`}>
                                   {label(name)}
                                 </Link>
                               </li>
@@ -206,6 +205,20 @@ function MobileMenu({ type }) {
 }
 
 export default function CategoryMenu({ type, variant = "desktop" }) {
-  if (variant === "mobile") return <MobileMenu type={type} />;
-  return <MegaMenu />;
+  const [tree, setTree] = useState(categoryNodes);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/categories")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.categories?.length) setTree(data.categories);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  if (!tree.length) return null;
+  if (variant === "mobile") return <MobileMenu type={type} tree={tree} />;
+  return <MegaMenu tree={tree} />;
 }

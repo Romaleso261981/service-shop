@@ -19,11 +19,13 @@ export default function ProductCardStyleOne({ datas, type }) {
       style={{ boxShadow: "0px 15px 64px 0px rgba(0, 0, 0, 0.05)" }}
     >
       <div className="product-card-img relative flex h-[300px] w-full items-center justify-center bg-white p-6">
-        <img
-          src={`/assets/images/${datas.image}`}
-          alt=""
-          className="max-h-full max-w-full object-contain"
-        />
+        {datas.image ? (
+          <img
+            src={`/assets/images/${datas.image}`}
+            alt=""
+            className="max-h-full max-w-full object-contain"
+          />
+        ) : null}
         {/* product available progress */}
         {datas.campaingn_product && (
           <>
@@ -100,9 +102,11 @@ export default function ProductCardStyleOne({ datas, type }) {
         </Link>
         <ProductFacts datas={datas} />
         <p className="price">
-          <span className="main-price text-qgray line-through font-600 text-[18px]">
-            {datas.price}
-          </span>
+          {datas.price && datas.price !== datas.offer_price ? (
+            <span className="main-price text-qgray line-through font-600 text-[18px]">
+              {datas.price}
+            </span>
+          ) : null}
           <span className="offer-price text-qred font-600 text-[18px] ml-2">
             {datas.offer_price}
           </span>

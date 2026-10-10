@@ -25,5 +25,5 @@ const sql = postgres(process.env.DATABASE_URL, { max: 1, connect_timeout: 5 });
 })();
 JS
 
-npx drizzle-kit push --force
+node src/db/migrate.cjs
 exec npx next start -H 0.0.0.0 -p 3000

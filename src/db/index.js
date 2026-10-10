@@ -16,4 +16,5 @@ if (process.env.NODE_ENV !== "production") {
   globalForDb.pgClient = client;
 }
 
+export const sql = client;
 export const db = drizzle(client, { schema });
