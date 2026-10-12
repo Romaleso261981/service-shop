@@ -40,7 +40,7 @@ export async function POST(request) {
     summary: plan.summary,
     rows: plan.rows
       .filter((row) => row.errors.length || row.warnings.length || row.action !== "invalid")
-      .slice(0, 80)
+      .slice(0, 500)
       .map(({ line, sku, title, action, errors, warnings }) => ({
         line,
         sku,

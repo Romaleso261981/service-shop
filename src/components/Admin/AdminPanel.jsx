@@ -250,12 +250,32 @@ export default function AdminPanel() {
     await load();
   }
 
-  async function sendImport(mode) {
-    if (!importFile) return;
+  async function downloadProducts() {
+    setError("");
+    const response = await fetch("/api/admin/export");
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      setError(data.error || "Не вдалося вивантажити товари");
+      return;
+    }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "products.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function sendImport(mode, file = importFile) {
+    if (!file) return;
+    if (mode === "apply" && !window.confirm(`Оновити товари з файлу «${file.name}»? Однаковий артикул буде перезаписано, новий артикул додасться.`)) {
+      return;
+    }
     setImporting(true);
     setError("");
     const body = new FormData();
-    body.append("file", importFile);
+    body.append("file", file);
     body.append("mode", mode);
     const response = await fetch("/api/admin/import", { method: "POST", body });
     const data = await response.json().catch(() => ({}));
@@ -270,10 +290,11 @@ export default function AdminPanel() {
       setTab("products");
       await load("");
       setError("");
-      window.alert(`Створено: ${data.applied.created}. Оновлено: ${data.applied.updated}. Помилок: ${data.applied.failed.length}.`);
+      window.alert(`Створено: ${data.applied.created}. Оновлено: ${data.applied.updated}. Пропущено: ${data.applied.invalid}. Помилок запису: ${data.applied.failed.length}.`);
       return;
     }
     setPreview(data);
+    setTab("import");
   }
 
   if (!ready) return <main className="min-h-screen bg-[#f7f7f7] p-10 text-qblack">Завантаження…</main>;
@@ -370,7 +391,24 @@ export default function AdminPanel() {
                 <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Пошук за назвою, артикулом або брендом" className="h-11 sm:w-80 border border-qgray-border px-4 outline-none focus:border-qyellow" />
                 <button type="submit" className="h-11 px-4 border border-qgray-border bg-white">Знайти</button>
               </form>
-              <button type="button" onClick={() => { setError(""); setForm({ ...emptyForm }); }} className="h-11 px-5 bg-qyellow font-600">Додати товар</button>
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={downloadProducts} className="h-11 px-5 border border-qgray-border bg-white">Вивантажити JSON</button>
+                <label className={`h-11 px-5 bg-qyellow font-600 inline-flex items-center ${importing ? "opacity-60" : "cursor-pointer"}`}>
+                  {importing ? "Оновлення…" : "Оновити товари"}
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    disabled={importing}
+                    className="hidden"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      event.target.value = "";
+                      if (file) sendImport("apply", file);
+                    }}
+                  />
+                </label>
+                <button type="button" onClick={() => { setError(""); setForm({ ...emptyForm }); }} className="h-11 px-5 bg-qyellow font-600">Додати товар</button>
+              </div>
             </div>
             <p className="mb-4 text-sm text-qgray">У базі: {total}. Показано: {products.length}.</p>
             {form && (
@@ -543,9 +581,12 @@ export default function AdminPanel() {
 
         {tab === "import" && (
           <section className="bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-600 mb-2">Імпорт JSON</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg font-600">JSON товарів</h2>
+              <button type="button" onClick={downloadProducts} className="h-11 px-5 border border-qgray-border bg-white">Вивантажити всі товари</button>
+            </div>
             <p className="text-sm text-qgray mb-4">
-              Файл з полем products. Однаковий артикул оновлює товар, новий артикул створює. Ціна — число в гривнях. Категорія — назва з меню, або category, subcategory і part, або category_path.
+              Файл може бути масивом товарів або обʼєктом з полем products. Однаковий артикул перезаписує товар у Postgres, новий артикул додає. Ціна в полі price — гривні, у полі price_amount — копійки. Категорія — назва з меню, category_path або category, subcategory і part.
             </p>
             <pre className="mb-4 overflow-x-auto bg-[#f7f7f7] p-4 text-xs leading-5">{`{
   "products": [{
@@ -568,7 +609,7 @@ export default function AdminPanel() {
             <input type="file" accept="application/json,.json" onChange={(event) => { setImportFile(event.target.files?.[0] || null); setPreview(null); }} className="mb-4 block" />
             <div className="flex gap-3 mb-6">
               <button type="button" disabled={!importFile || importing} onClick={() => sendImport("preview")} className="h-11 px-5 border border-qgray-border">Перевірити</button>
-              <button type="button" disabled={!preview || preview.summary.invalid === preview.summary.total || importing} onClick={() => sendImport("apply")} className="h-11 px-5 bg-qyellow font-600">Імпортувати коректні</button>
+              <button type="button" disabled={!importFile || importing} onClick={() => sendImport("apply")} className="h-11 px-5 bg-qyellow font-600">{importing ? "Оновлення…" : "Оновити товари"}</button>
             </div>
             {preview && (
               <div>

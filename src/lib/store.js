@@ -572,3 +572,40 @@ export async function findProductBySku(sku) {
 export async function applyImportedProduct(record) {
   return saveProduct(record.input, record.existingId || null);
 }
+
+export async function exportProducts() {
+  await ready();
+  const rows = await sql`
+    ${sql.unsafe(PRODUCT_SELECT)}
+    order by p.sku
+  `;
+  const products = await withChain(rows);
+  return products.map((row) => {
+    const photos = filenames(row.images, row.image);
+    const specs = Array.isArray(row.specs) ? row.specs : [];
+    const compatibility = Array.isArray(row.compatibility) ? row.compatibility : [];
+    return {
+      sku: row.sku,
+      title: row.title,
+      slug: row.slug,
+      category_id: row.category_id,
+      category_path: (row.category_chain || []).map((item) => item.name),
+      price_amount: row.price_amount,
+      sale_price_amount: row.sale_price_amount,
+      stock_status: row.stock_status,
+      stock_qty: row.stock_qty,
+      lead_time: row.lead_time || "",
+      brand: row.brand || "",
+      manufacturer: row.manufacturer || "",
+      warranty: row.warranty || "",
+      description: row.description || "",
+      specs,
+      image: photos[0] || "",
+      status: row.status,
+      seo_title: row.seo_title || "",
+      seo_description: row.seo_description || "",
+      product_images: photos.map((filename, index) => ({ filename, sort_order: index + 1 })),
+      product_compatibility: compatibility,
+    };
+  });
+}

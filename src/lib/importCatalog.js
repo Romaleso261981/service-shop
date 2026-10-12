@@ -14,12 +14,14 @@ function text(value) {
 
 function imageNames(row) {
   const images = [];
-  if (Array.isArray(row.images)) {
-    row.images.forEach((item) => {
+  [row.product_images, row.images].forEach((list) => {
+    if (!Array.isArray(list)) return;
+    const ordered = [...list].sort((left, right) => Number(left?.sort_order || 0) - Number(right?.sort_order || 0));
+    ordered.forEach((item) => {
       const name = text(typeof item === "string" ? item : item?.filename || item?.image);
       if (name) images.push(name);
     });
-  }
+  });
   const main = text(row.image);
   if (main) images.unshift(main);
   return images.filter((name, index) => images.indexOf(name) === index);
@@ -40,7 +42,7 @@ function specsOf(row) {
 }
 
 function compatibilityOf(row) {
-  const source = row.compatibility || row.compatible || row.models;
+  const source = row.compatibility || row.compatible || row.models || row.product_compatibility;
   if (Array.isArray(source)) {
     return source
       .map((item) => {
@@ -65,17 +67,85 @@ function compatibilityOf(row) {
   return [];
 }
 
+function nameKey(value) {
+  return text(value).toLowerCase().replace(/ё/g, "е").replace(/\s+/g, " ");
+}
+
+const CATEGORY_ALIASES = {
+  "для великої техніки": "для крупной техники",
+  "запчастини для витяжок": "запчасти для вытяжек",
+  "запчастини для плит і духовок": "запчасти для плит и духовок",
+  "запчастини до посудомийних машин": "запчасти для посудомоечных машин",
+  "запчастини до пральних машин": "запчасти для стиральных машин",
+  "запчастини до сушильних машин": "запчасти к сушильным машинам",
+  "запчастини до холодильників": "запчасти для холодильников",
+  "запчастини для холодильників": "запчасти для холодильников",
+  "фільтри": "фильтры",
+  "фільтр": "фильтры",
+  "двигуни": "двигатели",
+  "двигун": "двигатели",
+  "мотори": "двигатели",
+  "крильчатки": "крыльчатки",
+  "блоки керування": "блоки управления",
+  "блоки управління": "блоки управления",
+  "плати керування": "платы управления",
+  "плати управління": "платы управления",
+  "лампи підсвітки": "лампы подсветки",
+  "лампи підсвічування": "лампы подсветки",
+  "аксесуари": "аксессуары",
+};
+
+const PART_RULES = [
+  [/фільтр|фильтр/i, "фильтры"],
+  [/крильчат|крыльчат/i, "крыльчатки"],
+  [/двигун|двигател|мотор/i, "двигатели"],
+  [/блок\s+кер|блок\s+упр/i, "блоки управления"],
+  [/плат/i, "платы управления"],
+  [/ламп|плафон/i, "лампы подсветки"],
+  [/аксесуар|аксессуар/i, "аксессуары"],
+];
+
 function sameName(left, right) {
-  return text(left).toLowerCase() === text(right).toLowerCase();
+  const source = nameKey(left);
+  const target = nameKey(right);
+  return source === target || CATEGORY_ALIASES[source] === target || CATEGORY_ALIASES[target] === source;
+}
+
+function categoryNames(row) {
+  const raw = row.category_path ?? row.path;
+  if (Array.isArray(raw)) return raw.map((item) => text(item)).filter(Boolean);
+  const value = text(raw);
+  if (value.includes("/")) return value.split("/").map((item) => text(item)).filter(Boolean);
+  return [text(row.category), text(row.subcategory), text(row.part || row.group)].filter(Boolean);
+}
+
+function inferChild(categories, node, row) {
+  const children = categories.filter((item) => item.parent_id === node.id);
+  if (!children.length) return { id: node.id };
+  const spec = specsOf(row).find((item) => /вид запчаст/i.test(item.name));
+  const hint = `${spec?.value || ""} ${text(row.title)}`;
+  for (const [pattern, target] of PART_RULES) {
+    if (!pattern.test(hint)) continue;
+    const child = children.find((item) => {
+      const name = nameKey(item.name);
+      return name === target || name.startsWith(`${target} `);
+    });
+    if (child) return { id: child.id };
+  }
+  return { id: node.id, warning: `Підкатегорію не визначено, товар буде в «${node.name}»` };
 }
 
 function resolveCategory(categories, row) {
-  const categoryPath = text(row.category_path || row.path);
-  if (categoryPath) {
-    const found = categories.find((item) => item.path === categoryPath);
-    return found ? { id: found.id } : { error: `Категорію не знайдено: ${categoryPath}` };
+  if (row.category_id) {
+    const found = categories.find((item) => item.id === text(row.category_id));
+    if (found) return { id: found.id };
   }
-  const names = [text(row.category), text(row.subcategory), text(row.part || row.group)].filter(Boolean);
+  const rawPath = text(row.category_path || row.path);
+  if (rawPath && !Array.isArray(row.category_path)) {
+    const found = categories.find((item) => item.path === rawPath);
+    if (found) return inferChild(categories, found, row);
+  }
+  const names = categoryNames(row);
   if (!names.length) return { error: "Вкажіть категорію" };
   let candidates = categories.filter((item) => !item.parent_id && sameName(item.name, names[0]));
   if (!candidates.length) candidates = categories.filter((item) => sameName(item.name, names[0]));
@@ -89,7 +159,32 @@ function resolveCategory(categories, row) {
     if (children.length !== 1) return { error: `Підкатегорію не знайдено: ${name}` };
     node = children[0];
   }
-  return { id: node.id };
+  return inferChild(categories, node, row);
+}
+
+function amountFromKopecks(value) {
+  if (typeof value === "number" && Number.isInteger(value) && value >= 0) return value;
+  return null;
+}
+
+function priceAmount(source) {
+  if (source.price != null && source.price !== "") return parseMoney(source.price);
+  if (source.price_amount != null && source.price_amount !== "") {
+    return amountFromKopecks(source.price_amount) ?? parseMoney(source.price_amount);
+  }
+  return null;
+}
+
+function saleAmount(source) {
+  if (source.sale_price != null && source.sale_price !== "") return parseMoney(source.sale_price);
+  if (source.sale_price_amount != null && source.sale_price_amount !== "") {
+    return amountFromKopecks(source.sale_price_amount) ?? parseMoney(source.sale_price_amount);
+  }
+  return null;
+}
+
+function latinSlug(value) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(text(value)) ? text(value) : "";
 }
 
 function fileExists(name) {
@@ -123,16 +218,15 @@ export async function planImport(products) {
     if (!title) errors.push("Немає назви");
     if (sku && seen.has(sku.toLowerCase())) errors.push("Артикул повторюється у файлі");
     if (sku) seen.add(sku.toLowerCase());
-    const price = parseMoney(source.price ?? source.price_amount);
-    const sale = source.sale_price == null || source.sale_price === ""
-      ? null
-      : parseMoney(source.sale_price ?? source.sale_price_amount);
+    const price = priceAmount(source);
+    const hasSale = (source.sale_price != null && source.sale_price !== "")
+      || (source.sale_price_amount != null && source.sale_price_amount !== "");
+    const sale = hasSale ? saleAmount(source) : null;
     if (price == null) errors.push("Некоректна ціна");
-    if (source.sale_price != null && source.sale_price !== "" && sale == null) {
-      errors.push("Некоректна акційна ціна");
-    }
+    if (hasSale && sale == null) errors.push("Некоректна акційна ціна");
     const category = resolveCategory(categories, source);
     if (category.error) errors.push(category.error);
+    if (category.warning) warnings.push(category.warning);
     const stock = text(source.stock_status || source.stock || "in");
     const status = text(source.status || "active");
     if (!STOCK.includes(stock)) errors.push("Наявність має бути in, out або order");
@@ -155,7 +249,7 @@ export async function planImport(products) {
         : {
             sku,
             title,
-            slug: text(source.slug),
+            slug: latinSlug(source.slug),
             category_id: category.id,
             brand: text(source.brand),
             manufacturer: text(source.manufacturer),
@@ -170,8 +264,8 @@ export async function planImport(products) {
             seo_title: text(source.seo_title),
             seo_description: text(source.seo_description),
             status,
-            ...(source.image != null || source.images != null ? { images } : {}),
-            ...(source.compatibility != null || source.compatible != null || source.models != null
+            ...(source.image != null || source.images != null || source.product_images != null ? { images } : {}),
+            ...(source.compatibility != null || source.compatible != null || source.models != null || source.product_compatibility != null
               ? { compatibility: compatibilityOf(source) }
               : {}),
           },
