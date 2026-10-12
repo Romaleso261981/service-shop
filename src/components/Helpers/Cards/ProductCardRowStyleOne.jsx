@@ -12,24 +12,23 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
   return (
     <div
       data-aos="fade-left"
-      className={`product-row-card-style-one w-full h-[250px] bg-white group relative overflow-hidden ${
+      className={`product-row-card-style-one group relative w-full overflow-hidden bg-white ${
         className || ""
       }`}
     >
-      <div className="flex space-x-5 items-center w-full h-full lg:p-[30px] sm:p-5 p-2">
-        <div className="lg:w-1/2 w-1/3 h-full">
+      <div className="flex w-full items-center gap-4 p-4 sm:p-5">
+        <div className="h-[120px] w-[120px] shrink-0">
           {datas.image ? (
             <img
               src={`/assets/images/${datas.image}`}
               alt=""
-              className="w-full h-full object-contain"
+              className="h-full w-full object-contain"
             />
           ) : null}
         </div>
-        <div className="flex-1 flex flex-col justify-center h-full">
+        <div className="flex min-w-0 flex-1 flex-col justify-center">
           <div>
-            {/* reviews */}
-            <div className="flex space-x-1 mb-3">
+            <div className="mb-2 flex space-x-1">
               {Array.from(Array(datas.review), () => (
                 <span key={datas.review + Math.random()}>
                   <Star />
@@ -37,12 +36,12 @@ export default function ProductCardRowStyleTwo({ className, datas, type }) {
               ))}
             </div>
             <Link href={`/product/${datas.id}`}>
-              <p className="title mb-2 sm:text-[15px] text-[13px] font-600 text-qblack leading-[24px] line-clamp-2 hover:text-blue-600">
+              <p className="title mb-2 text-[13px] font-600 leading-[24px] text-qblack line-clamp-2 hover:text-blue-600 sm:text-[15px]">
                 {itemTitle(datas)}
               </p>
             </Link>
-            <ProductFacts datas={datas} />
-            <p className="price mb-[26px]">
+            <ProductFacts datas={datas} compact />
+            <p className="price mb-4">
               {datas.price && datas.price !== datas.offer_price ? (
                 <span className="main-price text-qgray line-through font-600 sm:text-[18px] text-base">
                   {datas.price}

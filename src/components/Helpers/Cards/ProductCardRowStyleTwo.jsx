@@ -10,28 +10,35 @@ export default function ProductCardRowStyleTwo({ className, datas }) {
       data-aos="fade-up"
       className={`product-card-row-two w-full  ${className || ""}`}
     >
-      <div className="w-full h-[105px] bg-white border border-primarygray px-5 ">
-        <div className="w-full h-full flex space-x-5 justify-center items-center">
-          <div className="w-[75px] h-[75px]">
-            <img
-              src={`/assets/images/${datas.image}`}
-              alt=""
-              className="w-full h-full object-cover"
-            />
+      <div className="w-full min-h-[105px] overflow-hidden border border-primarygray bg-white px-4 py-3">
+        <div className="flex w-full items-center gap-4">
+          <div className="h-[75px] w-[75px] shrink-0">
+            {datas.image ? (
+              <img
+                src={`/assets/images/${datas.image}`}
+                alt=""
+                className="h-full w-full object-contain"
+              />
+            ) : null}
           </div>
-          <div className="flex-1 h-full flex flex-col justify-center ">
+          <div className="flex min-w-0 flex-1 flex-col justify-center">
             <Link href={`/product/${datas.id}`}>
-              <p className="title mb-2 sm:text-[15px] text-[13px] font-600 text-qblack leading-[24px] line-clamp-1 hover:text-blue-600">
+              <p className="title mb-1 text-[13px] font-600 leading-5 text-qblack line-clamp-2 hover:text-blue-600 sm:text-[15px]">
                 {itemTitle(datas)}
               </p>
             </Link>
-            <ProductFacts datas={datas} />
-
+            <ProductFacts datas={datas} compact />
             <p className="price">
-              <span className="main-price text-qgray line-through font-600 text-[18px]">
-                {datas.price}
-              </span>
-              <span className="offer-price text-qred font-600 text-[18px] ml-2">
+              {datas.price && datas.price !== datas.offer_price ? (
+                <span className="main-price text-qgray line-through font-600 text-[18px]">
+                  {datas.price}
+                </span>
+              ) : null}
+              <span
+                className={`offer-price text-qred font-600 text-[18px]${
+                  datas.price && datas.price !== datas.offer_price ? " ml-2" : ""
+                }`}
+              >
                 {datas.offer_price}
               </span>
             </p>

@@ -19,7 +19,7 @@ services:
     profiles: ["app"]
     build: .
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
       DATABASE_URL: postgres://shop:${POSTGRES_PASSWORD:-shop}@postgres:5432/service_shop
       CATALOG_FILE: /data/products.json

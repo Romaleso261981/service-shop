@@ -9,10 +9,27 @@ export function stockText(stock, t) {
   return "";
 }
 
-export default function ProductFacts({ datas }) {
+export default function ProductFacts({ datas, compact = false }) {
   const { t } = useLanguage();
   if (!datas?.code && !datas?.sku && !datas?.stock) return null;
   const stock = stockText(datas.stock, t);
+  if (compact) {
+    return (
+      <p className="mb-1 truncate text-xs leading-5">
+        {datas.sku ? (
+          <span className="text-qgray">
+            {t("article")}: {datas.sku}
+          </span>
+        ) : null}
+        {stock ? (
+          <span className={datas.stock === "out" ? "text-qred" : "text-[#1a7f37]"}>
+            {datas.sku ? " · " : ""}
+            {stock}
+          </span>
+        ) : null}
+      </p>
+    );
+  }
   return (
     <div className="mb-2 text-xs text-qgray leading-5">
       {datas.code ? (
