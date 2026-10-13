@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { moneyToInput } from "../../lib/money";
 
@@ -35,6 +35,135 @@ function flatten(nodes, depth = 0, list = []) {
     flatten(node.children || [], depth + 1, list);
   });
   return list;
+}
+
+function findPath(nodes, id, path = []) {
+  for (const node of nodes || []) {
+    const next = [...path, node];
+    if (node.id === id) return next;
+    const found = findPath(node.children || [], id, next);
+    if (found) return found;
+  }
+  return null;
+}
+
+function CategoryDrill({ tree, value, onChange, emptyLabel, noneLabel, block, keepOnBack }) {
+  const [open, setOpen] = useState(false);
+  const [stack, setStack] = useState([]);
+  const box = useRef(null);
+  const path = findPath(tree, value) || [];
+  const level = stack.length ? stack[stack.length - 1].children || [] : tree || [];
+  const label = value === "none" ? noneLabel : path.length ? path.map((node) => node.name).join(" / ") : emptyLabel;
+
+  useEffect(() => {
+    if (!open) return undefined;
+    function close(event) {
+      if (!box.current?.contains(event.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [open]);
+
+  function toggle() {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    if (path.length && path[path.length - 1].children?.length) setStack(path);
+    else setStack(path.slice(0, -1));
+    setOpen(true);
+  }
+
+  function climb() {
+    const next = stack.slice(0, -1);
+    setStack(next);
+    if (!keepOnBack) onChange(next.length ? next[next.length - 1].id : "");
+  }
+
+  function pick(node) {
+    onChange(node.id);
+    if (node.children?.length) setStack((current) => [...current, node]);
+    else setOpen(false);
+  }
+
+  return (
+    <div className={`relative ${block ? "w-full" : ""}`} ref={box}>
+      <button type="button" title={label} onClick={toggle} className={`h-11 ${block ? "w-full" : "sm:w-72 w-full"} border border-qgray-border px-3 bg-white text-left truncate`}>
+        {label}
+      </button>
+      {open && (
+        <div className={`absolute z-30 mt-1 ${block ? "w-full" : "w-80"} max-h-80 overflow-y-auto bg-white border border-qgray-border shadow-lg`}>
+          {stack.length > 0 ? (
+            <>
+              <button type="button" onClick={climb} className="w-full text-left px-3 py-2 border-b border-qgray-border hover:bg-[#fafafa]">
+                ← {stack.length > 1 ? stack[stack.length - 2].name : "Основні категорії"}
+              </button>
+              <p className="px-3 py-2 text-sm font-600 border-b border-qgray-border">{stack[stack.length - 1].name}</p>
+            </>
+          ) : (
+            <>
+              <button type="button" onClick={() => { onChange(""); setOpen(false); }} className={`w-full text-left px-3 py-2 hover:bg-[#fafafa] ${value === "" ? "bg-[#fff6d6]" : ""}`}>
+                {emptyLabel}
+              </button>
+              {noneLabel ? (
+                <button type="button" onClick={() => { onChange("none"); setOpen(false); }} className={`w-full text-left px-3 py-2 hover:bg-[#fafafa] ${value === "none" ? "bg-[#fff6d6]" : ""}`}>
+                  {noneLabel}
+                </button>
+              ) : null}
+            </>
+          )}
+          {level.map((node) => (
+            <button
+              key={node.id}
+              type="button"
+              onClick={() => pick(node)}
+              className={`w-full text-left px-3 py-2 hover:bg-[#fafafa] flex items-center justify-between gap-3 ${value === node.id ? "bg-[#fff6d6]" : ""}`}
+            >
+              <span>{node.name}</span>
+              {node.children?.length ? <span className="text-qgray">›</span> : null}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function categoryLabel(product) {
+  const names = (product.category_chain || []).map((item) => item.name).filter(Boolean);
+  return names.length ? names.join(" / ") : "Без категорії";
+}
+
+function Pager({ page, pages, onPage }) {
+  if (pages <= 1) return null;
+  const items = [];
+  const windowStart = Math.max(1, page - 2);
+  const windowEnd = Math.min(pages, page + 2);
+  if (windowStart > 1) items.push(1);
+  if (windowStart > 2) items.push("…");
+  for (let number = windowStart; number <= windowEnd; number += 1) items.push(number);
+  if (windowEnd < pages - 1) items.push("…");
+  if (windowEnd < pages) items.push(pages);
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+      <button type="button" disabled={page <= 1} onClick={() => onPage(page - 1)} className="h-10 px-3 border border-qgray-border bg-white disabled:opacity-40">Назад</button>
+      {items.map((item, index) => (
+        item === "…" ? (
+          <span key={`gap-${index}`} className="px-1 text-qgray">…</span>
+        ) : (
+          <button
+            key={item}
+            type="button"
+            onClick={() => onPage(item)}
+            className={`h-10 min-w-10 px-3 border ${item === page ? "bg-qyellow border-qyellow font-600" : "bg-white border-qgray-border"}`}
+          >
+            {item}
+          </button>
+        )
+      ))}
+      <button type="button" disabled={page >= pages} onClick={() => onPage(page + 1)} className="h-10 px-3 border border-qgray-border bg-white disabled:opacity-40">Далі</button>
+    </div>
+  );
 }
 
 function formFromProduct(product) {
@@ -72,6 +201,11 @@ export default function AdminPanel() {
   const [categories, setCategories] = useState([]);
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [sortBy, setSortBy] = useState("category");
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -83,12 +217,23 @@ export default function AdminPanel() {
   const [importing, setImporting] = useState(false);
 
   const flat = useMemo(() => flatten(categories), [categories]);
+  const loadSeq = useRef(0);
 
-  async function load(search = query) {
+  async function load(overrides = {}) {
+    const search = overrides.search ?? query;
+    const page = overrides.page ?? pageNumber;
+    const category = overrides.category ?? categoryFilter;
+    const sort = overrides.sort ?? sortBy;
+    const seq = loadSeq.current + 1;
+    loadSeq.current = seq;
+    const params = new URLSearchParams({ page: String(page), sort });
+    if (search) params.set("q", search);
+    if (category) params.set("category", category);
     const [productsResponse, usersResponse] = await Promise.all([
-      fetch(`/api/admin/products?q=${encodeURIComponent(search)}`),
+      fetch(`/api/admin/products?${params}`),
       fetch("/api/admin/users"),
     ]);
+    if (seq !== loadSeq.current) return;
     if (productsResponse.status === 401) {
       setAuthed(false);
       setReady(true);
@@ -98,6 +243,9 @@ export default function AdminPanel() {
     const usersData = await usersResponse.json().catch(() => ({}));
     setProducts(data.products || []);
     setTotal(data.total || 0);
+    setPageNumber(data.page || page);
+    setPages(data.pages || 1);
+    setPageSize(data.limit || 20);
     setImages(data.images || []);
     setCategories(data.categories || []);
     setCustomers(usersData.users || []);
@@ -106,7 +254,7 @@ export default function AdminPanel() {
   }
 
   useEffect(() => {
-    load("");
+    load();
   }, []);
 
   async function login(event) {
@@ -123,7 +271,7 @@ export default function AdminPanel() {
       return;
     }
     setPassword("");
-    await load("");
+    await load();
   }
 
   async function changeStatus(user, status) {
@@ -203,7 +351,8 @@ export default function AdminPanel() {
       return;
     }
     if (form?.id === product.id) setForm(null);
-    await load();
+    const nextPage = products.length === 1 && pageNumber > 1 ? pageNumber - 1 : pageNumber;
+    await load({ page: nextPage });
   }
 
   async function addCategory(event) {
@@ -288,7 +437,8 @@ export default function AdminPanel() {
       setPreview(null);
       setImportFile(null);
       setTab("products");
-      await load("");
+      setPageNumber(1);
+      await load({ page: 1 });
       setError("");
       window.alert(`Створено: ${data.applied.created}. Оновлено: ${data.applied.updated}. Пропущено: ${data.applied.invalid}. Помилок запису: ${data.applied.failed.length}.`);
       return;
@@ -382,13 +532,41 @@ export default function AdminPanel() {
             </section>
             <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between mb-5">
               <form
-                className="flex gap-2"
+                className="flex flex-wrap gap-2"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  load(query);
+                  setPageNumber(1);
+                  load({ search: query, page: 1 });
                 }}
               >
                 <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Пошук за назвою, артикулом або брендом" className="h-11 sm:w-80 border border-qgray-border px-4 outline-none focus:border-qyellow" />
+                <CategoryDrill
+                  tree={categories}
+                  value={categoryFilter}
+                  emptyLabel="Усі категорії"
+                  noneLabel="Без категорії"
+                  onChange={(category) => {
+                    setCategoryFilter(category);
+                    setPageNumber(1);
+                    load({ category, page: 1 });
+                  }}
+                />
+                <select
+                  value={sortBy}
+                  onChange={(event) => {
+                    setSortBy(event.target.value);
+                    setPageNumber(1);
+                    load({ sort: event.target.value, page: 1 });
+                  }}
+                  className="h-11 border border-qgray-border px-3 bg-white outline-none focus:border-qyellow"
+                >
+                  <option value="category">За категорією</option>
+                  <option value="title">За назвою</option>
+                  <option value="sku">За артикулом</option>
+                  <option value="price">Спочатку дешевші</option>
+                  <option value="price_desc">Спочатку дорожчі</option>
+                  <option value="updated">Спочатку нові</option>
+                </select>
                 <button type="submit" className="h-11 px-4 border border-qgray-border bg-white">Знайти</button>
               </form>
               <div className="flex flex-wrap gap-2">
@@ -410,7 +588,9 @@ export default function AdminPanel() {
                 <button type="button" onClick={() => { setError(""); setForm({ ...emptyForm }); }} className="h-11 px-5 bg-qyellow font-600">Додати товар</button>
               </div>
             </div>
-            <p className="mb-4 text-sm text-qgray">У базі: {total}. Показано: {products.length}.</p>
+            <p className="mb-4 text-sm text-qgray">
+              У базі: {total}. На цій сторінці: {total === 0 ? 0 : (pageNumber - 1) * pageSize + 1}–{Math.min(total, pageNumber * pageSize)}.
+            </p>
             {form && (
               <form onSubmit={save} className="bg-white p-6 mb-6 shadow-sm grid md:grid-cols-2 gap-4">
                 <h2 className="md:col-span-2 text-lg font-600">{form.id ? "Редагувати товар" : "Новий товар"}</h2>
@@ -418,12 +598,14 @@ export default function AdminPanel() {
                 <Field label="Артикул"><input required value={form.sku} onChange={(event) => update("sku", event.target.value)} className={inputClass} /></Field>
                 <Field label="Адреса (slug)"><input value={form.slug} onChange={(event) => update("slug", event.target.value)} placeholder="Заповниться з назви" className={inputClass} /></Field>
                 <Field label="Категорія">
-                  <select value={form.category_id} onChange={(event) => update("category_id", event.target.value)} className={inputClass}>
-                    <option value="">Без категорії</option>
-                    {flat.map((item) => (
-                      <option key={item.id} value={item.id}>{"— ".repeat(item.depth)}{item.name}</option>
-                    ))}
-                  </select>
+                  <CategoryDrill
+                    block
+                    keepOnBack
+                    tree={categories}
+                    value={form.category_id}
+                    emptyLabel="Без категорії"
+                    onChange={(category) => update("category_id", category)}
+                  />
                 </Field>
                 <Field label="Бренд"><input value={form.brand} onChange={(event) => update("brand", event.target.value)} className={inputClass} /></Field>
                 <Field label="Виробник"><input value={form.manufacturer} onChange={(event) => update("manufacturer", event.target.value)} className={inputClass} /></Field>
@@ -522,6 +704,7 @@ export default function AdminPanel() {
                   <tr>
                     <th className="p-3 font-500">Фото</th>
                     <th className="p-3 font-500">Назва</th>
+                    <th className="p-3 font-500">Категорія</th>
                     <th className="p-3 font-500">Артикул</th>
                     <th className="p-3 font-500">Ціна</th>
                     <th className="p-3 font-500"></th>
@@ -535,6 +718,7 @@ export default function AdminPanel() {
                         <p>{product.title}</p>
                         {product.status === "inactive" && <p className="text-xs text-qred">Неактивний</p>}
                       </td>
+                      <td className="p-3 max-w-xs text-qgray">{categoryLabel(product)}</td>
                       <td className="p-3">{product.sku}</td>
                       <td className="p-3 whitespace-nowrap">
                         {product.price ? <span className="text-qgray line-through mr-2">{product.price}</span> : null}
@@ -547,11 +731,12 @@ export default function AdminPanel() {
                     </tr>
                   ))}
                   {products.length === 0 && (
-                    <tr><td colSpan="5" className="p-6 text-qgray">Товарів ще немає. Додайте вручну або імпортуйте JSON.</td></tr>
+                    <tr><td colSpan="6" className="p-6 text-qgray">За цим фільтром товарів немає.</td></tr>
                   )}
                 </tbody>
               </table>
             </div>
+            <Pager page={pageNumber} pages={pages} onPage={(next) => { setPageNumber(next); load({ page: next }); }} />
           </>
         )}
 

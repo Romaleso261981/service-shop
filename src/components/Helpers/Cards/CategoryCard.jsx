@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 
 export default function CategoryCard({ background, title, brands = [] }) {
-  const { t } = useLanguage();
+  const { t, category } = useLanguage();
   return (
     <div
       className="category-card-wrappwer w-full h-full p-[30px]"
@@ -18,15 +18,19 @@ export default function CategoryCard({ background, title, brands = [] }) {
         <h1 className="text-base font-600 tracking-wide mb-2">{t(title)}</h1>
         <div className="brands-list mb-[7px]">
           <ul>
-            {brands.map((brand) => (
-              <li key={brand + Math.random()}>
-                <Link href="/all-products">
-                  <span className="text-sm text-qgray hober:text-qBlack border-b border-transparent hover:border-qblack hover:text-qblack capitalize">
-                    {brand}
-                  </span>
-                </Link>
-              </li>
-            ))}
+            {brands.map((brand) => {
+              const name = typeof brand === "string" ? brand : brand.name;
+              const href = typeof brand === "string" ? "/all-products" : brand.href;
+              return (
+                <li key={href}>
+                  <Link href={href}>
+                    <span className="text-sm text-qgray hober:text-qBlack border-b border-transparent hover:border-qblack hover:text-qblack">
+                      {category(name)}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <a href="#">

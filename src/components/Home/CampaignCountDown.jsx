@@ -21,8 +21,10 @@ export default function CampaignCountDown({
               data-aos="fade-right"
               className="campaign-countdown lg:w-1/2 h-full w-full mb-5 lg:mb-0"
               style={{
-                background: `url(/assets/images/campaign-cover-countdown.jpg) no-repeat`,
+                backgroundImage: `linear-gradient(90deg, rgba(255,248,240,0.72) 0%, rgba(255,248,240,0.28) 42%, rgba(255,248,240,0) 68%), url(/assets/images/campaign-cover-countdown.jpg)`,
+                backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
             >
               <Link href="/flash-sale">
@@ -155,8 +157,9 @@ export default function CampaignCountDown({
                 </div>
                 <div className="app-screen">
                   <img
-                    src={appscreen || `/assets/images/app-screen.png`}
+                    src={appscreen || `/assets/images/app-screen.png?v=3`}
                     alt=""
+                    className="w-full max-h-[150px] object-contain object-center"
                   />
                 </div>
               </div>

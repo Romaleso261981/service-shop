@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../i18n/LanguageProvider";
 import { BANNER_ROTATE_MS } from "../../lib/bannerRotate";
-import { variantPath } from "../../lib/imageSizes";
 
 const homeBanners = [
   { src: "/assets/images/banner-washers.jpg", alt: "Запчастини для пральних машин" },
@@ -84,7 +83,7 @@ export default function Banner({ className, products = [], initialOffset = 0 }) 
                     <img
                       src={
                         top
-                          ? variantPath(top.image, 400, 285)
+                          ? `/assets/images/${top.image}`
                           : "/assets/images/banner-2.png"
                       }
                       alt={top ? itemTitle(top) : ""}
@@ -97,7 +96,7 @@ export default function Banner({ className, products = [], initialOffset = 0 }) 
                     <img
                       src={
                         bottom
-                          ? variantPath(bottom.image, 400, 286)
+                          ? `/assets/images/${bottom.image}`
                           : "/assets/images/banner-3.png"
                       }
                       alt={bottom ? itemTitle(bottom) : ""}

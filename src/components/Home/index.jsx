@@ -1,5 +1,4 @@
 import { bannerSlot } from "../../lib/bannerRotate";
-import { variantPath } from "../../lib/imageSizes";
 import SectionStyleFour from "../Helpers/SectionStyleFour";
 import SectionStyleOne from "../Helpers/SectionStyleOne";
 import SectionStyleThree from "../Helpers/SectionStyleThree";
@@ -22,16 +21,30 @@ function photos(products) {
   });
 }
 
-export default function Home({ products = [] }) {
-  const brands = [];
+const FAMOUS_BRANDS = ["Electrolux", "Bosch", "Samsung", "Gorenje", "Whirlpool", "Zanussi", "AEG", "Indesit"];
+
+function mainBrands(products) {
+  const present = new Set();
   products.forEach((product) => {
-    brands.push(product.brand);
+    String(product.brand || "")
+      .split(",")
+      .map((part) => part.trim().toLowerCase())
+      .filter(Boolean)
+      .forEach((brand) => present.add(brand));
   });
+  return FAMOUS_BRANDS.filter((brand) => present.has(brand.toLowerCase())).map((brand) => ({
+    name: brand,
+    href: `/all-products?q=${encodeURIComponent(brand)}`,
+  }));
+}
+
+export default function Home({ products = [] }) {
+  const brands = mainBrands(products);
   const shots = photos(products);
   const shot = (index) => (shots.length ? shots[index % shots.length] : null);
-  const ad = (index, width, height) => {
+  const ad = (index) => {
     const product = shot(index);
-    return product ? variantPath(product.image, width, height) : "";
+    return product ? `/assets/images/${product.image}` : "";
   };
   const href = (index) => {
     const product = shot(index);
@@ -51,7 +64,7 @@ export default function Home({ products = [] }) {
         <SectionStyleOne
           products={products}
           brands={brands}
-          categoryTitle="mobileTablet"
+          categoryTitle="brands"
           sectionTitle="gamerWorld"
           seeMoreUrl="/all-products"
           className="category-products mb-[60px]"
@@ -79,7 +92,7 @@ export default function Home({ products = [] }) {
           <BestSellers />
         </ViewMoreTitle>
         <ProductsAds
-          ads={[ad(3, 570, 295), ad(4, 571, 295)]}
+          ads={[ad(3), ad(4)]}
           links={[href(3), href(4)]}
           sectionHeight="sm:h-[295px] h-full"
           className="products-ads-section mb-[60px]"
@@ -88,13 +101,13 @@ export default function Home({ products = [] }) {
           categoryBackground={`/assets/images/section-category-2.jpg`}
           products={products.slice(4, products.length)}
           brands={brands}
-          categoryTitle="electronics"
+          categoryTitle="brands"
           sectionTitle="popularSales"
           seeMoreUrl="/all-products"
           className="category-products mb-[60px]"
         />
         <ProductsAds
-          ads={[ad(5, 1170, 293)]}
+          ads={[ad(5)]}
           links={[href(5)]}
           className="products-ads-section mb-[60px]"
         />
@@ -106,7 +119,7 @@ export default function Home({ products = [] }) {
         />
         <ProductsAds
           sectionHeight="164"
-          ads={[ad(6, 1170, 164)]}
+          ads={[ad(6)]}
           links={[href(6)]}
           className="products-ads-section mb-[60px]"
         />

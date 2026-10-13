@@ -243,7 +243,16 @@ export async function descendantIds(categoryId) {
   return rows.map((row) => row.id);
 }
 
-function productFilters({ q, brand, stock, min, max, status, categoryIds }) {
+function orderClause(sort) {
+  if (sort === "title") return sql`order by p.title asc, p.sku asc`;
+  if (sort === "sku") return sql`order by p.sku asc`;
+  if (sort === "price") return sql`order by coalesce(p.sale_price_amount, p.price_amount) asc nulls last, p.title asc`;
+  if (sort === "price_desc") return sql`order by coalesce(p.sale_price_amount, p.price_amount) desc nulls last, p.title asc`;
+  if (sort === "category") return sql`order by (select c.path from categories c where c.id = p.category_id) asc nulls last, p.title asc`;
+  return sql`order by p.updated_at desc`;
+}
+
+function productFilters({ q, brand, stock, min, max, status, categoryIds, uncategorized }) {
   const like = q ? `%${q.replace(/[%_]/g, "")}%` : null;
   return sql`
     ${status ? sql`p.status = ${status}` : sql`true`}
@@ -251,7 +260,7 @@ function productFilters({ q, brand, stock, min, max, status, categoryIds }) {
     ${stock ? sql`and p.stock_status = ${stock}` : sql``}
     ${min != null ? sql`and coalesce(p.sale_price_amount, p.price_amount) >= ${min}` : sql``}
     ${max != null ? sql`and coalesce(p.sale_price_amount, p.price_amount) <= ${max}` : sql``}
-    ${categoryIds?.length ? sql`and ${descendantCondition(categoryIds)}` : sql``}
+    ${uncategorized ? sql`and p.category_id is null` : categoryIds?.length ? sql`and ${descendantCondition(categoryIds)}` : sql``}
     ${
       like
         ? sql`and (
@@ -272,18 +281,21 @@ function productFilters({ q, brand, stock, min, max, status, categoryIds }) {
 export async function searchProducts(options = {}) {
   await ready();
   const limit = Math.min(48, Math.max(1, Number(options.limit) || 24));
-  const page = Math.max(1, Number(options.page) || 1);
-  const offset = (page - 1) * limit;
+  const requestedPage = Math.max(1, Number(options.page) || 1);
   const where = productFilters(options);
+  const totalRows = await sql`select count(*)::int as total from products p where ${where}`;
+  const total = totalRows[0]?.total || 0;
+  const pages = Math.max(1, Math.ceil(total / limit));
+  const page = Math.min(requestedPage, pages);
+  const offset = (page - 1) * limit;
   const rows = await sql`
     ${sql.unsafe(PRODUCT_SELECT)}
     where ${where}
-    order by p.updated_at desc
+    ${orderClause(options.sort)}
     limit ${limit} offset ${offset}
   `;
-  const totalRows = await sql`select count(*)::int as total from products p where ${where}`;
   const products = (await withChain(rows)).map(toPublicProduct);
-  return { products, total: totalRows[0]?.total || 0, page, limit };
+  return { products, total, page, limit, pages };
 }
 
 export async function listBrands() {
